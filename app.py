@@ -26,5 +26,21 @@ def contacts():
 def pvzadresa():
     return render_template('pvzadresa.html')
 
+@app.route('/order')
+def order():
+    return render_template('order.html')
+
+@app.route('/pickup')
+def pickup():
+    return render_template('pickup.html')
+
+@app.route('/expose')
+def expose():
+    return render_template('expose.html')
+
+@app.route('/links')
+def links():
+    return render_template('links.html')
+
 if __name__ == '__main__':
     app.run()
