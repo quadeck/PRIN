@@ -1,0 +1,144 @@
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #06ff00;
+  color: #ff0000;
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: Roboto,Calibri,Arial,sans-serif;
+}
+.button:hover {
+  background: #ff0000;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+.header {
+    background-color: #f8f8f8;
+    padding: 15px 0;
+    border-bottom: 1px solid #e7e7e7;
+    position: sticky;
+}
+
+.logo{
+margin-right: 1100px;
+}
+
+.nav-list {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 0;
+    padding: 0 25px;
+    align-items: center;
+}
+
+.nav-list li {
+    margin-left: 20px;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.nav-list a:hover {
+    color: #0066cc;
+}
+
+.main {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.action-btn {
+    padding: 12px 24px;
+    background-color: #ff8d00;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    transition: background-color 0.3s;
+    font-weight: bolder;
+}
+
+.action-btn1 {
+    padding: 12px 24px;
+    background-color: #26ff00;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    transition: background-color 0.3s;
+    font-weight: bolder;
+}
+
+.action-btn2 {
+    padding: 12px 24px;
+    background-color: #ff0000;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    transition: background-color 0.3s;
+    font-weight: bolder;
+}
+
+.action-btn3 {
+    padding: 12px 24px;
+    background-color: #00e1ff;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    transition: background-color 0.3s;
+    font-weight: bolder;
+}
+
+.footer {
+    background-color: #f8f8f8;
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #e7e7e7;
+    margin-top: 40px;
+}
+
+.copyright {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.disclaimer {
+    font-size: 12px;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
