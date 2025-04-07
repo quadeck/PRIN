@@ -212,3 +212,13 @@ body {
 .tg:hover {
     color: #0066cc;
 }
+
+#map {
+    position: absolute;
+    left: 700px;
+    top: 250px;
+    width: 500px;
+    height: 500px;
+    border: 30px solid black;
+    background: black;
+}
