@@ -4,21 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/FlaskProject1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/script.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/contacts.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/pvzadresa.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/test.html" afterDir="false" />
+    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="D">
+      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/links.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/links.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +26,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "quadeck"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/quadeck/PRIN.git",
+    "accountId": "5e6dd2c3-e3ec-4886-9a88-30cdd8ba095b"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;712222ff&quot;,
   &quot;associatedIndex&quot;: 8
@@ -51,7 +51,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
-    "Flask server.FlaskProject1.executor": "Run",
+    "Flask server.FlaskProject1.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
@@ -114,12 +114,65 @@
       <workItem from="1743875895399" duration="149000" />
       <workItem from="1743876294207" duration="5679000" />
       <workItem from="1743924855800" duration="403000" />
-      <workItem from="1743965233866" duration="7068000" />
+      <workItem from="1743965233866" duration="15616000" />
     </task>
+    <task id="LOCAL-00001" summary="D">
+      <option name="closed" value="true" />
+      <created>1743973448426</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743973448426</updated>
+    </task>
+    <task id="LOCAL-00002" summary="D">
+      <option name="closed" value="true" />
+      <created>1743974015058</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743974015058</updated>
+    </task>
+    <task id="LOCAL-00003" summary="D">
+      <option name="closed" value="true" />
+      <created>1743975436373</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743975436373</updated>
+    </task>
+    <task id="LOCAL-00004" summary="D">
+      <option name="closed" value="true" />
+      <created>1743981440640</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743981440640</updated>
+    </task>
+    <task id="LOCAL-00005" summary="D">
+      <option name="closed" value="true" />
+      <created>1743981612424</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743981612424</updated>
+    </task>
+    <task id="LOCAL-00006" summary="D">
+      <option name="closed" value="true" />
+      <created>1743984091773</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743984091773</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="D" />
+    <option name="LAST_COMMIT_MESSAGE" value="D" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -133,6 +186,6 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/FlaskProject1$FlaskProject1.coverage" NAME="FlaskProject1 Coverage Results" MODIFIED="1743970686076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FlaskProject1$FlaskProject1.coverage" NAME="FlaskProject1 Coverage Results" MODIFIED="1743984930796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -160,6 +160,7 @@ body {
     border: none;
     cursor: pointer;
     left: 360px;
+    z-index: 2;
 }
 
 .tg:hover {
