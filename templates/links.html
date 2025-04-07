@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+<div id="twitch-embed"></div>
 
+<script src="https://player.twitch.tv/js/embed/v1.js"></script>
+<script>
+  new Twitch.Player("twitch-embed", {
+    channel: "quadeck",
+    width: "100%",
+    height: 600
+  });
+</script>
+
+<style>
+  #twitch-embed {
+    margin: 20px auto;
+    max-width: 1200px;
+  }
+</style>
+<a href="https://t.me/quadeck">
+<button class='tg'>TELEGRAM</button>
+</a>
 </body>
 </html>

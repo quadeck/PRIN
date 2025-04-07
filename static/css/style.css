@@ -143,3 +143,25 @@ body {
     max-width: 800px;
     margin: 0 auto;
 }
+
+.tg {
+    font-size: 60px;
+    padding: 12px 24px;
+    color: black;
+    align-items: center;
+    position: relative;
+    align-content: center;
+    background: #00e1ff;
+    width: 1200px;
+    height: 150px;
+    border-radius: 100px;
+    font-weight: bolder;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    left: 360px;
+}
+
+.tg:hover {
+    color: #0066cc;
+}
