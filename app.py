@@ -1,10 +1,45 @@
-from flask import Flask, render_template
+from flask import Flask,g, render_template
 import sqlite3
 
 app = Flask(__name__)
+app.secret_key = 'fxckbalenci666'
 
-connect = sqlite3.connect('users.db')
-cursor = connect.cursor()
+DATABASE = 'database.db'
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+        db.row_factory = sqlite3.Row
+    return db
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
+@app.route('/')
+def index():
+    db = get_db()
+    cursor = db.execute('SELECT * FROM users')
+    return [dict(row) for row in cursor.fetchall()]
+
+def init_db():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    db.commit()
+
+
 
 @app.route('/')
 def hello_world():  # put application's code here
