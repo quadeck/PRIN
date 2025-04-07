@@ -1,10 +1,12 @@
+from re import search
+
 from flask import Flask,g, render_template
 import sqlite3
 
 app = Flask(__name__)
 app.secret_key = 'fxckbalenci666'
 
-DATABASE = 'database.db'
+DATABASE = 'users.db'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -19,27 +21,30 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-@app.route('/')
-def index():
+@app.route('/database')
+def database():
     db = get_db()
-    cursor = db.execute('SELECT * FROM users')
+    cursor = db.execute('SELECT * FROM accounts')
     return [dict(row) for row in cursor.fetchall()]
 
 def init_db():
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
+    cursor.execute(
+        'INSERT INTO accounts (username, password) VALUES (?, ?)',
+        ("quadeck", "ddd1")
+    )
     db.commit()
+@app.route('/id/<int:id>')
+def get_id(id):
+    db = get_db()
+    cursor = db.execute('SELECT * FROM accounts WHERE id = ?', (id,))
+    user_id = cursor.fetchone()
 
+    if not user_id:
+        return render_template('404.html'); print('id не найден')
 
+    return dict(user_id)
 
 @app.route('/')
 def hello_world():  # put application's code here
@@ -78,4 +83,6 @@ def links():
     return render_template('links.html')
 
 if __name__ == '__main__':
+    with app.app_context():
+        init_db()
     app.run()

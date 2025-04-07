@@ -4,9 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="D">
+    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="устал">
+      <change afterPath="$PROJECT_DIR$/templates/404.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/85b32789-ec95-4164-9408-9e1ddea9b681.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/85b32789-ec95-4164-9408-9e1ddea9b681/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dfccdf8-d8bd-485a-a809-1f90a481fcf4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dfccdf8-d8bd-485a-a809-1f90a481fcf4/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ae3201ce-4363-4207-a816-330dafa424f3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/ae3201ce-4363-4207-a816-330dafa424f3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/db742706-5b37-429f-beb7-a2bff36cb109.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/db742706-5b37-429f-beb7-a2bff36cb109/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/contacts.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contacts.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/expose.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/expose.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/links.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/links.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/pickup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pickup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/pvzadresa.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pvzadresa.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,18 +47,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "quadeck"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;quadeck&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/quadeck/PRIN.git",
-    "accountId": "5e6dd2c3-e3ec-4886-9a88-30cdd8ba095b"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/quadeck/PRIN.git&quot;,
+    &quot;accountId&quot;: &quot;5e6dd2c3-e3ec-4886-9a88-30cdd8ba095b&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;712222ff&quot;,
   &quot;associatedIndex&quot;: 8
@@ -51,7 +72,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
-    "Flask server.FlaskProject1.executor": "Debug",
+    "Flask server.Flask (app.py).executor": "Run",
+    "Flask server.FlaskProject1.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
@@ -75,7 +97,23 @@
       <recent name="C:\Users\quadeck\PycharmProjects\FlaskProject1\images" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Flask server.Flask (app.py)">
+    <configuration name="Flask (app.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="FlaskProject1" />
+      <option name="target" value="$PROJECT_DIR$/app.py" />
+      <option name="targetType" value="PATH" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="FlaskProject1" type="Python.FlaskServer">
       <module name="FlaskProject1" />
       <option name="target" value="$PROJECT_DIR$/app.py" />
@@ -92,6 +130,11 @@
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Flask server.Flask (app.py)" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -114,7 +157,8 @@
       <workItem from="1743875895399" duration="149000" />
       <workItem from="1743876294207" duration="5679000" />
       <workItem from="1743924855800" duration="403000" />
-      <workItem from="1743965233866" duration="15616000" />
+      <workItem from="1743965233866" duration="20531000" />
+      <workItem from="1744011766066" duration="7312000" />
     </task>
     <task id="LOCAL-00001" summary="D">
       <option name="closed" value="true" />
@@ -164,7 +208,23 @@
       <option name="project" value="LOCAL" />
       <updated>1743984091773</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="устал">
+      <option name="closed" value="true" />
+      <created>1743985436252</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1743985436252</updated>
+    </task>
+    <task id="LOCAL-00008" summary="устал">
+      <option name="closed" value="true" />
+      <created>1744011740419</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1744011740419</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,7 +232,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="D" />
-    <option name="LAST_COMMIT_MESSAGE" value="D" />
+    <MESSAGE value="устал" />
+    <option name="LAST_COMMIT_MESSAGE" value="устал" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -186,6 +247,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/FlaskProject1$FlaskProject1.coverage" NAME="FlaskProject1 Coverage Results" MODIFIED="1743984930796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FlaskProject1$FlaskProject1.coverage" NAME="FlaskProject1 Coverage Results" MODIFIED="1744015340115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FlaskProject1$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1744024102179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
