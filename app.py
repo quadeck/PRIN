@@ -1,8 +1,14 @@
-from flask import Flask,g , render_template, session, request, redirect
+from flask import Flask,g , render_template, session, request, redirect, flash, url_for
 import sqlite3
 
 app = Flask(__name__)
 app.secret_key = 'fxckbalenci666'
+
+def init_db():
+    connection = sqlite3.connect('users.db')
+    cursor = connection.cursor()
+    connection.commit()
+    connection.close()
 
 DATABASE = 'users.db'
 
@@ -25,36 +31,57 @@ def database():
     cursor = db.execute('SELECT * FROM accounts')
     return [dict(row) for row in cursor.fetchall()]
 
-def init_db():
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute(
-        'INSERT INTO accounts (username, password) VALUES (?, ?)',
-        ("quadeck", "ddd1")
-    )
-    db.commit()
-@app.route('/id/<int:id>')
-def get_id(id):
-    db = get_db()
-    cursor = db.execute('SELECT * FROM accounts WHERE id = ?', (id,))
-    user_id = cursor.fetchone()
-
-    if not user_id:
-        return render_template('404.html'); print('id не найден')
-
-    return dict(user_id)
-
 @app.route('/')
-def hello_world():  # put application's code here
+def hello_world():
     return render_template('index.html')
 
-@app.route('/signup')
+
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if 'user' in session:
+        return redirect(url_for('hello_world'))
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        db = get_db()
+        cursor = db.execute('SELECT * FROM accounts WHERE username = ?', (username,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            flash('Пользователь с таким логином уже существует!', 'error')
+        else:
+            db.execute('INSERT INTO accounts (username, password) VALUES (?, ?)', (username, password))
+            db.commit()
+            flash('Регистрация прошла успешно! Через 3 секунды вас перенаправят на страницу авторизации', 'success')
     return render_template('signup.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    db = get_db()
+    error = None
+    if 'user' in session:
+        return redirect(url_for('hello_world'))
+
+    if request.method == 'GET':
+        ref = request.referrer
+        if ref and not ref.endswith('/login'):
+            session['previous_url'] = ref
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        cursor = db.execute('SELECT * FROM accounts WHERE username = ? AND password = ?', (username, password))
+        user = cursor.fetchone()
+
+        if user:
+            session['user'] = dict(user)
+            return redirect('/')
+        else:
+            flash('Неверный логин или пароль!', 'errorlog')
+
     return render_template('login.html')
+
 
 @app.route('/contacts')
 def contacts():
@@ -79,6 +106,24 @@ def expose():
 @app.route('/links')
 def links():
     return render_template('links.html')
+
+@app.route('/profile')
+def profile():
+    if 'user' not in session:
+        return redirect(url_for('vopros'))
+
+    return render_template('profile.html')
+
+@app.route('/vopros')
+def vopros():
+    if 'user' in session:
+        return redirect(url_for('hello_world'))
+    return render_template('vopros.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(request.referrer)
 
 if __name__ == '__main__':
     with app.app_context():

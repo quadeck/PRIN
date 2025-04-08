@@ -17,16 +17,30 @@
             </li>
             <li><a href="/contacts">Контакты</a></li>
             <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
-            <li><a href="/login">Войти</a></li>
-            <li><a href="/signup">Зарегистрироваться</a></li>
+
+            {% if 'user' in session %}
+                <li><a href="/profile">Личный кабинет</a></li>
+                <li><a href="/logout">Выйти</a></li>
+            {% else %}
+                <li><a href="/login">Войти</a></li>
+                <li><a href="/signup">Зарегистрироваться</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
 <div class='login-wrapper'>
-     <form action="/login" method="post">
-    <input type="text" id="username" name="username" placeholder="Введите логин" required>
+     <form action="/login" method="post" autocomplete="off">
+    <input type="text" id="username" name="username" placeholder="Введите логин" required autocomplete="off">
      <br>
-    <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+    <input type="password" id="password" name="password" placeholder="Введите пароль" required autocomplete="off">
+     <br>
+            <div id="passwordError" class="error-message">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                 <p>{{ messages[0] }}</p>
+                 {% endif %}
+                 {% endwith %}
+            </div>
      <br>
          <div class='loginbutton'>
     <button type="submit">Войти</button>
