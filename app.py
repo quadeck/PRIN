@@ -1,6 +1,4 @@
-from re import search
-
-from flask import Flask,g, render_template
+from flask import Flask,g , render_template, session, request, redirect
 import sqlite3
 
 app = Flask(__name__)
