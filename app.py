@@ -1,8 +1,10 @@
-from flask import Flask,g , render_template, session, request, redirect, flash, url_for, jsonify
+from flask import Flask,g , render_template, request, redirect, flash, url_for, session
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
-
+from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'fxckbalenci666'
@@ -10,9 +12,47 @@ app.secret_key = 'fxckbalenci666'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 PRODUCT_IMAGE_FOLDER = 'static/uploads'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_message = 'Пожалуйста, войдите, чтобы получить доступ к этой странице.'
+login_manager.login_view = 'vopros'
+
+class User(UserMixin):
+    def __init__(self, id, username, password_hash, role='user'):
+        self.id = id
+        self.username = username
+        self.password_hash = password_hash
+        self.role = role
+
+@login_manager.user_loader
+def load_user(user_id):
+    db = get_db()
+    cursor = db.execute('SELECT * FROM accounts WHERE id = ?', (user_id,))
+    user_data = cursor.fetchone()
+
+    if user_data:
+        role = user_data['role'] if 'role' in user_data else 'user'
+        return User(
+            id=user_data['id'],
+            username=user_data['username'],
+            password_hash=user_data['password'],
+            role=role
+        )
+    return None
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.role != 'admin':
+            flash('Доступ запрещён!', 'errordostup')
+            return redirect(url_for('hello_world'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 def save_image(file):
     if file and allowed_file(file.filename):
@@ -44,6 +84,7 @@ def close_connection(exception):
         db.close()
 
 @app.route('/database')
+@admin_required
 def database():
     db = get_db()
     accounts_cursor = db.execute('SELECT * FROM accounts')
@@ -58,50 +99,43 @@ def hello_world():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if 'user' in session:
-        return redirect(url_for('hello_world'))
-    error = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        role = 'admin' if username == 'admin123' else 'user'
         db = get_db()
-        cursor = db.execute('SELECT * FROM accounts WHERE username = ?', (username,))
-        existing_user = cursor.fetchone()
-
-        if existing_user:
-            flash('Пользователь с таким логином уже существует!', 'error')
-        else:
-            db.execute('INSERT INTO accounts (username, password) VALUES (?, ?)', (username, password))
-            db.commit()
-            flash('Регистрация прошла успешно! Через 3 секунды вас перенаправят на страницу авторизации', 'success')
+        db.execute(
+            'INSERT INTO accounts (username, password, role) VALUES (?, ?, ?)',
+            (username, generate_password_hash(password), role)
+        )
+        db.commit()
+        flash('Регистрация прошла успешно! Вы можете войти.', 'success')
+        return redirect(url_for('login'))
     return render_template('signup.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    db = get_db()
-    error = None
-    if 'user' in session:
+    if current_user.is_authenticated:
         return redirect(url_for('hello_world'))
-
-    if request.method == 'GET':
-        ref = request.referrer
-        if ref and not ref.endswith('/login'):
-            session['previous_url'] = ref
 
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        cursor = db.execute('SELECT * FROM accounts WHERE username = ? AND password = ?', (username, password))
-        user = cursor.fetchone()
 
-        if user:
-            session['user'] = dict(user)
-            return redirect('/')
+        db = get_db()
+        cursor = db.execute('SELECT * FROM accounts WHERE username = ?', (username,))
+        user_data = cursor.fetchone()
+
+        if user_data and check_password_hash(user_data['password'], password):
+            user = User(id=user_data['id'], username=user_data['username'], password_hash=user_data['password'])
+            login_user(user)
+
+            next_url = session.pop('next', None)
+            return redirect(next_url or url_for('hello_world'))
         else:
-            flash('Неверный логин или пароль!', 'errorlog')
+            flash('Неверный логин или пароль!', 'error')
 
     return render_template('login.html')
-
 
 @app.route('/contacts')
 def contacts():
@@ -112,25 +146,38 @@ def pvzadresa():
     return render_template('pvzadresa.html')
 
 @app.route('/catalog')
+@login_required
 def catalog():
-    if 'user' not in session:
-        return redirect(url_for('vopros'))
-    db = get_db()
-    products_cursor = db.execute('SELECT * FROM products')
-    products = [dict(row) for row in products_cursor.fetchall()]
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
 
-    return render_template('catalog.html', products=products)
+    db = get_db()
+
+    total_products = db.execute('SELECT COUNT(*) FROM products').fetchone()[0]
+
+    total_pages = (total_products + per_page - 1) // per_page
+
+    products = db.execute(
+        'SELECT * FROM products LIMIT ? OFFSET ?',
+        (per_page, (page - 1) * per_page)
+    ).fetchall()
+
+    return render_template(
+        'catalog.html',
+        products=products,
+        page=page,
+        total_pages=total_pages,
+        per_page=per_page
+    )
 
 @app.route('/pickup')
+@login_required
 def pickup():
-    if ('user' not in session):
-        return redirect(url_for('vopros'))
     return render_template('pickup.html')
 
 @app.route('/expose')
+@login_required
 def expose():
-    if ('user' not in session):
-        return redirect(url_for('vopros'))
     error = None
     if request.method == 'POST':
         name = request.form['name']
@@ -143,8 +190,8 @@ def expose():
 
     return render_template('expose.html')
 
-
 @app.route('/add_product', methods=['POST'])
+@login_required
 def add_product():
     if request.method == 'POST':
         name = request.form['name']
@@ -175,23 +222,23 @@ def links():
     return render_template('links.html')
 
 @app.route('/profile')
+@login_required
 def profile():
-    if 'user' not in session:
-        return redirect(url_for('vopros'))
-
     return render_template('profile.html')
 
 @app.route('/vopros')
 def vopros():
-    if 'user' in session:
+    if current_user.is_authenticated:
         return redirect(url_for('hello_world'))
+
+    session['next'] = request.args.get('next') or request.referrer
     return render_template('vopros.html')
 
 @app.route('/logout')
+@login_required
 def logout():
-    session.pop('user', None)
+    logout_user()
     return redirect(request.referrer)
-
 
 @app.route('/delete_product', methods=['POST'])
 def delete_product():
@@ -216,7 +263,6 @@ def delete_product():
         flash('Товар с таким артикулом не найден.', 'errorsearch')
 
     return redirect(request.referrer)
-
 
 @app.route('/delete_account', methods=['POST'])
 def delete_account():

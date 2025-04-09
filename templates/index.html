@@ -19,8 +19,7 @@
             </li>
             <li><a href="/contacts">Контакты</a></li>
             <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
-
-            {% if 'user' in session %}
+            {% if current_user.is_authenticated %}
                 <li><a href="/profile">Личный кабинет</a></li>
                 <li><a href="/logout">Выйти</a></li>
             {% else %}

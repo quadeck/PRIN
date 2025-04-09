@@ -5,6 +5,19 @@
     <title>Каталог PRIN</title>
     <link rel="icon" href="/static/images/favicon.png" type="image/png">
     <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+    window.addEventListener("beforeunload", function () {
+        localStorage.setItem("scrollY", window.scrollY);
+    });
+
+    window.addEventListener("load", function () {
+        const scrollY = localStorage.getItem("scrollY");
+        if (scrollY !== null) {
+            window.scrollTo(0, parseInt(scrollY));
+            localStorage.removeItem("scrollY");
+        }
+    });
+</script>
 </head>
 <body>
 <header class="header">
@@ -17,7 +30,7 @@
             </li>
             <li><a href="/contacts">Контакты</a></li>
             <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
-            {% if 'user' in session %}
+            {% if current_user.is_authenticated %}
                 <li><a href="/profile">Личный кабинет</a></li>
                 <li><a href="/logout">Выйти</a></li>
             {% else %}
@@ -39,7 +52,7 @@
                 <p>{{ product.description }}</p>
                 <p><strong>{{ product.price }} ₽</strong></p>
                 <p>Осталось: {{ product.stock_quantity }}</p>
-                <p><small>Арт: {{ product.articul }}</small></p>
+                <p><small>Артикул: {{ product.articul }}</small></p>
             </div>
         {% endfor %}
     </div>
@@ -48,5 +61,16 @@
     <p>Товары не найдены.</p>
     </div>
 {% endif %}
+<div class="pagination">
+      {% if page > 1 %}
+        <a href="{{ url_for('catalog', page=page-1) }}">Предыдущая</a>
+      {% endif %}
+
+      <span>Страница {{ page }} из {{ total_pages }}</span>
+
+      {% if page < total_pages %}
+        <a href="{{ url_for('catalog', page=page+1) }}">Следующая</a>
+      {% endif %}
+</div>
 </body>
 </html>
