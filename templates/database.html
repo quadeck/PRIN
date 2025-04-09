@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Данные из базы данных</title>
+</head>
+<body>
+    <h1>Данные из базы данных</h1>
+
+    <h2>Список пользователей (accounts)</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя пользователя</th>
+                <th>Пароль</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in accounts %}
+                <tr>
+                    <td>{{ account.id }}</td>
+                    <td>{{ account.username }}</td>
+                    <td>{{ account.password }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form action="{{ url_for('delete_account') }}" method="POST">
+        <label for="id">Введите айди пользователя:</label>
+        <input type="number" id="id" name="id" placeholder="id" required>
+        <button type="submit">Удалить аккаунт</button>
+    </form>
+
+    <h2>Список товаров (products)</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Артикул</th>
+                <th>Название товара</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Когда создан</th>
+                <th>Ссылка на изображение</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if products %}
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.articul }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.stock_quantity }}</td>
+                    <td>{{ product.created_at }}</td>
+                    <td>{{ product.image_url }}</td>
+                </tr>
+            {% endfor %}
+            {% else %}
+        {% endif %}
+        </tbody>
+    </table>
+    <form action="{{ url_for('delete_product') }}" method="POST">
+        <label for="articul">Введите артикул товара:</label>
+        <input type="number" id="articul" name="articul" placeholder="Артикул" required>
+        <button type="submit">Удалить товар</button>
+    </form>
+</body>
+</html>

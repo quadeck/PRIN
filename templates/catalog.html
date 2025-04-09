@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Оформить заказ PRIN</title>
+    <title>Каталог PRIN</title>
     <link rel="icon" href="/static/images/favicon.png" type="image/png">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
@@ -17,7 +17,6 @@
             </li>
             <li><a href="/contacts">Контакты</a></li>
             <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
-
             {% if 'user' in session %}
                 <li><a href="/profile">Личный кабинет</a></li>
                 <li><a href="/logout">Выйти</a></li>
@@ -28,6 +27,24 @@
         </ul>
     </nav>
 </header>
-
+<div class="catalogtovarov">
+    <h1>Каталог товаров</h1>
+</div>
+    {% if products %}
+        <div class="product-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ product.image_url or 'https://via.placeholder.com/150' }}" alt="Фото товара">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p><strong>{{ product.price }} ₽</strong></p>
+                    <p>Осталось: {{ product.stock_quantity }}</p>
+                    <p><small>Арт: {{ product.articul }}</small></p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Товары не найдены.</p>
+    {% endif %}
 </body>
 </html>

@@ -28,13 +28,15 @@ def close_connection(exception):
 @app.route('/database')
 def database():
     db = get_db()
-    cursor = db.execute('SELECT * FROM accounts')
-    return [dict(row) for row in cursor.fetchall()]
+    accounts_cursor = db.execute('SELECT * FROM accounts')
+    products_cursor = db.execute('SELECT * FROM products')
+    accounts = [dict(row) for row in accounts_cursor.fetchall()]
+    products = [dict(row) for row in products_cursor.fetchall()]
+    return render_template('database.html', accounts=accounts, products=products)
 
 @app.route('/')
 def hello_world():
     return render_template('index.html')
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -91,17 +93,57 @@ def contacts():
 def pvzadresa():
     return render_template('pvzadresa.html')
 
-@app.route('/order')
-def order():
-    return render_template('order.html')
+@app.route('/catalog')
+def catalog():
+    if ('user' not in session):
+        return redirect(url_for('vopros'))
+    db = get_db()
+    products_cursor = db.execute('SELECT * FROM products')
+    products = [dict(row) for row in products_cursor.fetchall()]
+
+    return render_template('catalog.html', products=products)
 
 @app.route('/pickup')
 def pickup():
+    if ('user' not in session):
+        return redirect(url_for('vopros'))
     return render_template('pickup.html')
 
 @app.route('/expose')
 def expose():
+    if ('user' not in session):
+        return redirect(url_for('vopros'))
+    error = None
+    if request.method == 'POST':
+        name = request.form['name']
+        description = request.form['description']
+        image_url = request.form['image_url']
+        price = request.form['price']
+        stock_quantity = request.form['stock_quantity']
+        db = get_db()
+        db.execute('INSERT INTO products (name, description, image_url, price, stock_quantity) VALUES (?, ?, ?, ?, ?)', (name, description, image_url, price, stock_quantity))
+        db.commit()
+
     return render_template('expose.html')
+
+
+@app.route('/add_product', methods=['POST'])
+def add_product():
+    if request.method == 'POST':
+        name = request.form['name']
+        description = request.form['description']
+        image_url = request.form['image_url']
+        price = float(request.form['price'])
+        stock_quantity = int(request.form['stock_quantity'])
+
+        db = get_db()
+
+        db.execute('INSERT INTO products (name, description, image_url, price, stock_quantity) VALUES (?, ?, ?, ?, ?)',
+                   (name, description, image_url, price, stock_quantity))
+
+        db.commit()
+
+        return redirect(url_for('catalog'))
 
 @app.route('/links')
 def links():
@@ -123,6 +165,30 @@ def vopros():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    return redirect(request.referrer)
+
+@app.route('/delete_product', methods=['POST'])
+def delete_product():
+    articul = request.form['articul']
+    db = get_db()
+    product = db.execute('SELECT * FROM products WHERE articul = ?', (articul,)).fetchone()
+
+    if product:
+        db.execute('DELETE FROM products WHERE articul = ?', (articul,))
+        db.commit()
+
+    return redirect(request.referrer)
+
+@app.route('/delete_account', methods=['POST'])
+def delete_account():
+    id = request.form['id']
+    db = get_db()
+    account = db.execute('SELECT * FROM accounts WHERE id = ?', (id,)).fetchone()
+
+    if account:
+        db.execute('DELETE FROM accounts WHERE id = ?', (id,))
+        db.commit()
+
     return redirect(request.referrer)
 
 if __name__ == '__main__':
