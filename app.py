@@ -1,8 +1,26 @@
-from flask import Flask,g , render_template, session, request, redirect, flash, url_for
+from flask import Flask,g , render_template, session, request, redirect, flash, url_for, jsonify
 import sqlite3
+import os
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.secret_key = 'fxckbalenci666'
+
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+PRODUCT_IMAGE_FOLDER = 'static/uploads'
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+def save_image(file):
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath =   os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        return filepath
+    return None
 
 def init_db():
     connection = sqlite3.connect('users.db')
@@ -95,7 +113,7 @@ def pvzadresa():
 
 @app.route('/catalog')
 def catalog():
-    if ('user' not in session):
+    if 'user' not in session:
         return redirect(url_for('vopros'))
     db = get_db()
     products_cursor = db.execute('SELECT * FROM products')
@@ -117,11 +135,10 @@ def expose():
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
-        image_url = request.form['image_url']
         price = request.form['price']
         stock_quantity = request.form['stock_quantity']
         db = get_db()
-        db.execute('INSERT INTO products (name, description, image_url, price, stock_quantity) VALUES (?, ?, ?, ?, ?)', (name, description, image_url, price, stock_quantity))
+        db.execute('INSERT INTO products (name, description, price, stock_quantity) VALUES (?, ?, ?, ?)', (name, description, price, stock_quantity))
         db.commit()
 
     return render_template('expose.html')
@@ -132,17 +149,25 @@ def add_product():
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
-        image_url = request.form['image_url']
         price = float(request.form['price'])
         stock_quantity = int(request.form['stock_quantity'])
 
+        image_file = request.files.get('image')
+        image_url = None
+        if image_file:
+            image_path = save_image(image_file)
+            if image_path:
+                image_url = '/static/uploads/' + os.path.basename(image_path)
+            else:
+                flash('Не удалось загрузить файл изображения!', 'errorload')
+                return redirect(url_for('add_product'))
+
         db = get_db()
-
-        db.execute('INSERT INTO products (name, description, image_url, price, stock_quantity) VALUES (?, ?, ?, ?, ?)',
-                   (name, description, image_url, price, stock_quantity))
-
+        db.execute('INSERT INTO products (name, description, price, stock_quantity, image_url) VALUES (?, ?, ?, ?, ?)',
+                   (name, description, price, stock_quantity, image_url))
         db.commit()
 
+        flash('Продукт успешно добавлен!', 'successadd')
         return redirect(url_for('catalog'))
 
 @app.route('/links')
@@ -167,17 +192,31 @@ def logout():
     session.pop('user', None)
     return redirect(request.referrer)
 
+
 @app.route('/delete_product', methods=['POST'])
 def delete_product():
     articul = request.form['articul']
     db = get_db()
+
     product = db.execute('SELECT * FROM products WHERE articul = ?', (articul,)).fetchone()
 
     if product:
+        image_name = product['image_url'].split('/')[-1]
+
+        image_path = os.path.join(PRODUCT_IMAGE_FOLDER, image_name)
+
+        if os.path.exists(image_path):
+            os.remove(image_path)
+
         db.execute('DELETE FROM products WHERE articul = ?', (articul,))
         db.commit()
 
+        flash('Товар и изображение успешно удалены.', 'successdel')
+    else:
+        flash('Товар с таким артикулом не найден.', 'errorsearch')
+
     return redirect(request.referrer)
+
 
 @app.route('/delete_account', methods=['POST'])
 def delete_account():

@@ -5,6 +5,39 @@
     <title>Выставить на продажу PRIN</title>
     <link rel="icon" href="/static/images/favicon.png" type="image/png">
     <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        function clearImage() {
+            document.getElementById("image").value = "";
+            document.getElementById("image-button").innerText = "Выберите файл";
+            document.getElementById("delete-button").classList.remove("visible");
+        }
+
+        function updateFileName() {
+            var fileInput = document.getElementById('image');
+            var fileName = fileInput.files.length > 0 ? fileInput.files[0].name : 'Не выбран файл';
+            document.getElementById('image-button').innerText = fileName;
+
+            var deleteButton = document.getElementById("delete-button");
+            if (fileInput.files.length > 0) {
+                deleteButton.classList.add("visible");
+            } else {
+                deleteButton.classList.remove("visible");
+            }
+        }
+
+        function validateForm() {
+            var fileInput = document.getElementById("image");
+            var errorMessage = document.getElementById("error-message");
+
+            if (fileInput.files.length === 0) {
+                errorMessage.style.display = "block";
+                return false;
+            }
+
+            errorMessage.style.display = "none";
+            return true;
+        }
+    </script>
 </head>
 <body>
 <header class="header">
@@ -17,7 +50,6 @@
             </li>
             <li><a href="/contacts">Контакты</a></li>
             <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
-
             {% if 'user' in session %}
                 <li><a href="/profile">Личный кабинет</a></li>
                 <li><a href="/logout">Выйти</a></li>
@@ -28,19 +60,17 @@
         </ul>
     </nav>
 </header>
-<main>
-    <form action="/add_product" method="POST">
-        <input type="text" id="name" name="name" placeholder="Название" required><br><br>
-
-        <textarea id="description" name="description" placeholder="Описание"></textarea><br><br>
-
-        <input type="text" id="image_url" name="image_url" placeholder="Введите ссылку на изображение" required><br><br>
-
-        <input type="number" step="0.01" id='price' name="price" placeholder="Цена" required><br><br>
-
-        <input type="number" id="stock_quantity" name="stock_quantity" placeholder="Колличество" required><br><br>
-
+<main class="product-form-wrapper">
+    <form action="/add_product" method="POST" class="product-form" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <input type="text" id="name" name="name" placeholder="Название" required>
+        <textarea id="description" name="description" placeholder="Описание"></textarea>
+        <label for="image" class="file-button" id="image-button">Выберите фото</label>
+        <input type="file" id="image" name="image" accept="image/*" onchange="updateFileName()">
+        <button type="button" id="delete-button" class="delete-button" onclick="clearImage()">Удалить изображение</button>
+        <input type="number" step="0.01" id="price" name="price" placeholder="Цена" required>
+        <input type="number" id="stock_quantity" name="stock_quantity" placeholder="Количество" required>
         <button type="submit">Добавить</button>
+        <div id="error-message">Ошибка: Пожалуйста, загрузите изображение товара.</div>
     </form>
 </main>
 </body>

@@ -30,21 +30,23 @@
 <div class="catalogtovarov">
     <h1>Каталог товаров</h1>
 </div>
-    {% if products %}
-        <div class="product-grid">
-            {% for product in products %}
-                <div class="product-card">
-                    <img src="{{ product.image_url or 'https://via.placeholder.com/150' }}" alt="Фото товара">
-                    <h3>{{ product.name }}</h3>
-                    <p>{{ product.description }}</p>
-                    <p><strong>{{ product.price }} ₽</strong></p>
-                    <p>Осталось: {{ product.stock_quantity }}</p>
-                    <p><small>Арт: {{ product.articul }}</small></p>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>Товары не найдены.</p>
-    {% endif %}
+{% if products %}
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <img src="{{ product.image_url or '/static/images/placeholder.png' }}" alt="Фото товара">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p><strong>{{ product.price }} ₽</strong></p>
+                <p>Осталось: {{ product.stock_quantity }}</p>
+                <p><small>Арт: {{ product.articul }}</small></p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="no-products-message">
+    <p>Товары не найдены.</p>
+    </div>
+{% endif %}
 </body>
 </html>
