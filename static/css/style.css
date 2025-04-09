@@ -29,14 +29,17 @@ body {
 }
 
 html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
+
 
 .header {
     background-color: #f8f8f8;
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid black;
     position: sticky;
 }
 
@@ -156,16 +159,22 @@ html, body {
     text-align: center;
     border-top: 1px solid #e7e7e7;
     margin-top: auto;
+    font-family: 'system-ui', 'Inter', 'Montserrat', 'Itim', sans-serif;
+    font-size: 15px;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid black;
+    color: black;
 }
 
 .copyright {
-    font-size: 14px;
+    font-size: 15px;
     margin-bottom: 10px;
 }
 
 .disclaimer {
-    font-size: 12px;
-    color: #666;
+    font-size: 15px;
+    color: black;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -185,19 +194,24 @@ html, body {
     border: none;
     cursor: pointer;
     left: 360px;
+    margin-bottom: 70px;
+    margin-top: 70px;
 }
 .tg:hover {
     color: #0066cc;
 }
 
 #map {
-    position: absolute;
-    left: 700px;
-    top: 250px;
-    width: 500px;
-    height: 500px;
-    border: 30px solid black;
+    width: 100%;
+    height: 100%;
     background: black;
+}
+
+.main-map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .login-wrapper,
@@ -298,6 +312,7 @@ html, body {
     margin: 30px;
     margin-left: 50px;
     margin-right: 50px;
+    text-decoration: none !important;
 }
 
 .product-card {
@@ -308,6 +323,7 @@ html, body {
     text-align: center;
     background-color: #f9f9f9;
     transition: transform 0.3s ease-in-out;
+    text-decoration: none !important;
 }
 
 .product-card:hover {
@@ -333,7 +349,6 @@ html, body {
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
-    min-height: 80vh;
     background-color: #f8f9fa;
 }
 
@@ -497,4 +512,293 @@ body :not(header) button:hover {
 .pagination .disabled {
     opacity: 0.5;
     pointer-events: none;
+}
+
+.product-page {
+    font-family: 'system-ui','Rubik Spray Paint','Inter','Montserrat','Itim',sans-serif;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    text-decoration: none;
+    text-align: center;
+}
+
+.product-page a {
+    text-decoration: none;
+}
+
+.product-page .button   {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0083ff;
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: 'system-ui','Rubik Spray Paint','Inter','Montserrat','Itim',sans-serif;
+    font-size: 20px;
+    margin: 20px;
+}
+
+.buttonnazad {
+    color: white;
+}
+
+.product-page .button:hover {
+    background: #0066ff;
+}
+
+.product-page .header {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e7e7e7;
+    position: sticky;
+}
+
+.product-page .nav-list-links {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 0;
+    padding: 0 15px;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+.product-page .nav-list-links a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.product-page .nav-list-links a:hover {
+    color: #00f7ff;
+}
+
+.product-page .main {
+    text-align: center;
+    justify-content: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.product-page .product-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-page .product-card:hover {
+    transform: scale(1.2);
+}
+
+.product-page .product-card img {
+    max-width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.product-page .product-card h3 {
+    margin: 10px 0 5px;
+}
+
+.product-page .product-actions button {
+    padding: 12px 20px;
+    background-color: #5cb85c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.product-page .product-actions button:hover {
+    background-color: #4cae4c;
+}
+
+.product-page .product-form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 80vh;
+    background-color: #f8f9fa;
+}
+
+.product-page .product-form {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-page .product-form input,
+.product-page .product-form textarea {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.product-page .product-form input:focus,
+.product-page .product-form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.product-page .product-form textarea {
+    resize: none;
+    min-height: 100px;
+}
+
+.product-page .product-form button {
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 25px;
+}
+
+.product-page .product-form button:hover {
+    background-color: green;
+}
+
+.product-page .product-form button:hover {
+    background-color: green;
+}
+
+.product-page #image {
+    display: none;
+}
+
+.product-page .file-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.product-page .file-button:hover {
+    background-color: #0056b3;
+}
+
+.product-page .delete-button {
+    display: none !important;
+    padding: 10px 20px !important;
+    background-color: #007bff !important;
+    color: white !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+    border-radius: 12px !important;
+    border: none !important;
+    transition: background-color 0.3s !important;
+}
+
+.product-page .delete-button.visible {
+    display: inline-block !important;
+}
+
+.product-page .delete-button:hover {
+    background-color: #e04343 !important;
+}
+
+.product-page .no-products-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 50px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 200px;
+    font-weight: bolder;
+}
+
+.product-page .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+a {
+    text-decoration: none !important;
+    color: inherit !important;
+    cursor: pointer !important;
+}
+
+.product-page .pagination a,
+.product-page .pagination span {
+    display: inline-block;
+    padding: 8px 14px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.product-page .pagination a:hover {
+    background-color: #dcdcdc;
+}
+
+.product-page .pagination .active {
+    background-color: #333;
+    color: #fff;
+    pointer-events: none;
+}
+
+.product-page .pagination .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.product-page .product-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.product-card:hover {
+    background-color: #dfdfdf;
+}
+
+.product-page .product-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1200px;
 }

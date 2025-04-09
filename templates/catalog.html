@@ -46,14 +46,16 @@
 {% if products %}
     <div class="product-grid">
         {% for product in products %}
-            <div class="product-card">
-                <img src="{{ product.image_url or '/static/images/placeholder.png' }}" alt="Фото товара">
-                <h3>{{ product.name }}</h3>
-                <p>{{ product.description }}</p>
-                <p><strong>{{ product.price }} ₽</strong></p>
-                <p>Осталось: {{ product.stock_quantity }}</p>
-                <p><small>Артикул: {{ product.articul }}</small></p>
-            </div>
+            <a href="{{ url_for('product_page', articul=product.articul) }}" class="product-card-link">
+                <div class="product-card">
+                    <img src="{{ product.image_url or '/static/images/placeholder.png' }}" alt="Фото товара">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p><strong>{{ product.price }} ₽</strong></p>
+                    <p>Осталось: {{ product.stock_quantity }}</p>
+                    <p><small>Артикул: {{ product.articul }}</small></p>
+                </div>
+            </a>
         {% endfor %}
     </div>
 {% else %}
@@ -72,5 +74,9 @@
         <a href="{{ url_for('catalog', page=page+1) }}">Следующая</a>
       {% endif %}
 </div>
+<footer class="footer">
+    <p class="copyright">PRIN - маркетплейс © марк "quadeck" аккумулятор 2025-2025.</p>
+    <p class="disclaimer">Переходя сюда вы даете согласие что я списываю все деньги с вашей карты потому что сами согласились на аферту(аферу) и мне ваще пох😎😎😎</p>
+</footer>
 </body>
 </html>

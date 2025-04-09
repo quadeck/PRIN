@@ -5,6 +5,8 @@ import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 app.secret_key = 'fxckbalenci666'
@@ -168,6 +170,37 @@ def login():
             flash('Неверный логин или пароль!', 'error')
 
     return render_template('login.html')
+
+@app.route('/product/<int:articul>')
+def product_page(articul):
+    db = get_db()
+    product = db.execute('SELECT * FROM products WHERE articul = ?', (articul,)).fetchone()
+
+    if product is None:
+        flash("Товар не найден", "error")
+        return redirect(url_for('catalog'))
+
+    return render_template('product.html', product=product)
+
+@app.route('/add_to_cart/<int:articul>', methods=['POST'])
+@login_required
+def add_to_cart(articul):
+    db = get_db()
+    product = db.execute('SELECT * FROM products WHERE articul = ?', (articul,)).fetchone()
+
+    if not product:
+        flash("Товар не найден", "error")
+        return redirect(url_for('catalog'))
+
+    if 'cart' not in session:
+        session['cart'] = []
+
+    session['cart'].append({'articul': articul, 'name': product['name'], 'price': product['price']})
+
+    session.modified = True  #
+
+    flash(f"Товар {product['name']} добавлен в корзину.", "success")
+    return redirect(url_for('product_page', articul=articul))
 
 @app.route('/contacts')
 def contacts():
