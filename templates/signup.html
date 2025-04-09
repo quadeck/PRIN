@@ -34,29 +34,34 @@
      <br>
     <input type="password" id="password" name="password" placeholder="Введите пароль" required autocomplete="off">
      <br>
-    <div id="message">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <p class="message {{ category }}-message">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
+<div id="message">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="message {{ category }}-message">{{ message }}</p>
+                {% if category == 'success' %}
+                    <script type="text/javascript">
+                        setTimeout(function(){
+                            window.location.href = "{{ url_for('login') }}";
+                        }, 3000);
+                    </script>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
      <br>
          <div class='signupbutton'>
     <button type="submit">Зарегестрироваться</button>
          </div>
     </form>
 </div>
-
-{% if get_flashed_messages(with_categories=true) %}
+{% if category == 'success' %}
     <script type="text/javascript">
         setTimeout(function(){
             window.location.href = "{{ url_for('login') }}";
         }, 3000);
     </script>
 {% endif %}
-
 </body>
 </html>
