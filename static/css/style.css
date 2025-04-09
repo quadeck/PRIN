@@ -228,10 +228,6 @@ html, body {
     margin-top: 20px;
 }
 
-.signupbutton button {
-    margin-top: 10px;
-}
-
 .wrapper {
     flex: 1;
     display: flex;

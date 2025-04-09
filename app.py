@@ -97,20 +97,52 @@ def database():
 def hello_world():
     return render_template('index.html')
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        flash('Вы уже авторизованы!', 'info')
+        return redirect(url_for('hello_world'))
+
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        role = 'admin' if username == 'admin123' else 'user'
-        db = get_db()
-        db.execute(
-            'INSERT INTO accounts (username, password, role) VALUES (?, ?, ?)',
-            (username, generate_password_hash(password), role)
-        )
-        db.commit()
-        flash('Регистрация прошла успешно! Вы можете войти.', 'success')
-        return redirect(url_for('login'))
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+
+        if not username or not password:
+            flash('Все поля обязательны для заполнения!', 'error')
+            return render_template('signup.html')
+
+        try:
+            db = get_db()
+            existing_user = db.execute(
+                'SELECT id FROM accounts WHERE username = ?',
+                (username,)
+            ).fetchone()
+
+            if existing_user:
+                flash('Пользователь с таким именем уже существует!', 'error')
+                return render_template('signup.html')
+
+            role = 'admin' if username.lower() == 'admin123' else 'user'
+
+            password_hash = generate_password_hash(password)
+
+            db.execute(
+                '''INSERT INTO accounts 
+                (username, password, role) 
+                VALUES (?, ?, ?)''',
+                (username, password_hash, role)
+            )
+            db.commit()
+
+            flash('Регистрация прошла успешно! Теперь вы можете войти.', 'success')
+            return redirect(url_for('login'))
+
+        except sqlite3.Error as e:
+            db.rollback()
+            flash('Произошла ошибка при регистрации. Попробуйте позже.', 'error')
+            app.logger.error(f'Ошибка регистрации: {str(e)}')
+
     return render_template('signup.html')
 
 @app.route('/login', methods=['GET', 'POST'])
