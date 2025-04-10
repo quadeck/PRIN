@@ -6,6 +6,26 @@
     <title>Личный кабинет PRIN</title>
     <link rel="icon" href="/static/images/favicon.png" type="image/png">
     <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        function clearImage() {
+            document.getElementById("image").value = "";
+            document.getElementById("image-button").innerText = "Выберите файл";
+            document.getElementById("delete-button").classList.remove("visible");
+        }
+
+        function updateFileName() {
+            var fileInput = document.getElementById('image');
+            var fileName = fileInput.files.length > 0 ? fileInput.files[0].name : 'Не выбран файл';
+            document.getElementById('image-button').innerText = fileName;
+
+            var deleteButton = document.getElementById("delete-button");
+            if (fileInput.files.length > 0) {
+                deleteButton.classList.add("visible");
+            } else {
+                deleteButton.classList.remove("visible");
+            }
+        }
+    </script>
 </head>
 <body>
 <header class="header">
@@ -28,6 +48,22 @@
         </ul>
     </nav>
 </header>
+<div class="profile-container">
+<h2>Профиль пользователя</h2>
+<p>Ник: {{ user.username }}</p>
+<p>Дата регистрации: {{ user.created_at }}</p>
+
+{% if avatar_url %}
+    <img src="{{ avatar_url }}" alt="Аватарка" style="width: 150px; border-radius: 50%;">
+{% endif %}
+<form method="POST" class="profile-button" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="Новое имя">
+    <label for="image" class="file-button" id="image-button">Выберите фото</label>
+    <input type="file" id="image" name="image" accept="image/*" onchange="updateFileName()">
+    <button type="button" id="delete-button" class="delete-button" onclick="clearImage()">Удалить изображение</button>
+    <button type="submit">Сохранить</button>
+</form>
+</div>
 <footer class="footer">
     <p class="copyright">PRIN - маркетплейс © марк "quadeck" аккумулятор 2025-2025.</p>
     <p class="disclaimer">Переходя сюда вы даете согласие что я списываю все деньги с вашей карты потому что сами согласились на аферту(аферу) и мне ваще пох😎😎😎</p>

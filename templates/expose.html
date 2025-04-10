@@ -64,6 +64,11 @@
     <form action="/add_product" method="POST" class="product-form" enctype="multipart/form-data" onsubmit="return validateForm()">
         <input type="text" id="name" name="name" placeholder="Название" required>
         <textarea id="description" name="description" placeholder="Описание"></textarea>
+        <style>
+            .file-button {
+                margin-bottom: 25px !important;
+            }
+        </style>
         <label for="image" class="file-button" id="image-button">Выберите фото</label>
         <input type="file" id="image" name="image" accept="image/*" onchange="updateFileName()">
         <button type="button" id="delete-button" class="delete-button" onclick="clearImage()">Удалить изображение</button>

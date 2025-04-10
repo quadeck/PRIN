@@ -14,6 +14,11 @@ app.secret_key = 'fxckbalenci666'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 PRODUCT_IMAGE_FOLDER = 'static/uploads'
+
+app.config['AVATARS_FOLDER'] = 'static/avatars'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+PRODUCT_AVATARS_FOLDER = 'static/avatars'
+
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 def allowed_file(filename):
@@ -60,6 +65,14 @@ def save_image(file):
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         filepath =   os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        return filepath
+    return None
+
+def save_avatars(file):
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['AVATARS_FOLDER'], filename)
         file.save(filepath)
         return filepath
     return None
@@ -286,10 +299,35 @@ def add_product():
 def links():
     return render_template('links.html')
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    return render_template('profile.html')
+    db = get_db()
+    user_data = db.execute('SELECT username, created_at FROM accounts WHERE id = ?', (current_user.id,)).fetchone()
+
+    if request.method == 'POST':
+        name = request.form['name']
+        image_file = request.files.get('image')
+
+        if name:
+            db.execute('UPDATE accounts SET username = ? WHERE id = ?', (name, current_user.id))
+            db.commit()
+
+        if image_file:
+            image_path = save_avatars(image_file)
+            if image_path:
+                image_url = '/static/avatars/' + os.path.basename(image_path)
+                session['avatar_url'] = image_url  # 🟢 сохраняем
+            else:
+                flash('Не удалось загрузить файл изображения!', 'errorload')
+                return redirect(url_for('profile'))
+
+        return redirect(url_for('profile'))
+
+    avatar_url = session.get('avatar_url')
+    return render_template('profile.html', user=user_data, avatar_url=avatar_url)
+
+
 
 @app.route('/vopros')
 def vopros():
