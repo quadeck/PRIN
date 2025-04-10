@@ -1,10 +1,11 @@
-from flask import Flask,g , render_template, request, redirect, flash, url_for, session
+from flask import Flask,g , render_template, request, redirect, flash, url_for, session, send_file
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from io import BytesIO
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -55,10 +56,18 @@ def load_user(user_id):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated or current_user.role != 'admin':
-            flash('Доступ запрещён!', 'errordostup')
+        if not current_user.is_authenticated:
+            return redirect(url_for('vopros'))
+
+        db = get_db()
+        user_data = db.execute('SELECT role FROM accounts WHERE id = ?', (current_user.id,)).fetchone()
+
+        if user_data is None or user_data['role'] != 'admin':
+            flash('Доступ запрещён!', 'error')
             return redirect(url_for('hello_world'))
+
         return f(*args, **kwargs)
+
     return decorated_function
 
 def save_image(file):
@@ -142,11 +151,15 @@ def signup():
 
             password_hash = generate_password_hash(password)
 
+            default_avatar_path = os.path.join('static', 'images', 'default-avatar.jpg')
+            with open(default_avatar_path, 'rb') as f:
+                avatar_bytes = f.read()
+
             db.execute(
                 '''INSERT INTO accounts 
-                (username, password, role) 
-                VALUES (?, ?, ?)''',
-                (username, password_hash, role)
+                   (username, password, role, avatar) 
+                   VALUES (?, ?, ?, ?)''',
+                (username, password_hash, role, avatar_bytes)
             )
             db.commit()
 
@@ -303,31 +316,52 @@ def links():
 @login_required
 def profile():
     db = get_db()
-    user_data = db.execute('SELECT username, created_at FROM accounts WHERE id = ?', (current_user.id,)).fetchone()
+    user_data = db.execute(
+        'SELECT username, created_at FROM accounts WHERE id = ?',
+        (current_user.id,)
+    ).fetchone()
 
     if request.method == 'POST':
         name = request.form['name']
         image_file = request.files.get('image')
 
         if name:
-            db.execute('UPDATE accounts SET username = ? WHERE id = ?', (name, current_user.id))
+            db.execute(
+                'UPDATE accounts SET username = ? WHERE id = ?',
+                (name, current_user.id)
+            )
             db.commit()
 
         if image_file:
-            image_path = save_avatars(image_file)
-            if image_path:
-                image_url = '/static/avatars/' + os.path.basename(image_path)
-                session['avatar_url'] = image_url  # 🟢 сохраняем
-            else:
-                flash('Не удалось загрузить файл изображения!', 'errorload')
-                return redirect(url_for('profile'))
+            image_bytes = image_file.read()
+            db.execute(
+                'UPDATE accounts SET avatar = ? WHERE id = ?',
+                (image_bytes, current_user.id)
+            )
+            db.commit()
 
         return redirect(url_for('profile'))
 
-    avatar_url = session.get('avatar_url')
+    avatar_url = url_for('user_avatar', user_id=current_user.id)
+
     return render_template('profile.html', user=user_data, avatar_url=avatar_url)
 
+@app.route('/avatar/<int:user_id>')
+def user_avatar(user_id):
+    db = get_db()
+    row = db.execute(
+        'SELECT avatar FROM accounts WHERE id = ?',
+        (user_id,)
+    ).fetchone()
 
+    if row and row['avatar']:
+        return send_file(
+            BytesIO(row['avatar']),
+            mimetype='image/jpeg,png,jpg,gif'
+        )
+    else:
+        # Отдать заглушку
+        return redirect(url_for('static', filename='default_avatar.png'))
 
 @app.route('/vopros')
 def vopros():

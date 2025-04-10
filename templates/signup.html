@@ -37,11 +37,6 @@
             {% for category, message in messages %}
                 <p class="message {{ category }}-message">{{ message }}</p>
                 {% if category == 'success' %}
-                    <script type="text/javascript">
-                        setTimeout(function(){
-                            window.location.href = "{{ url_for('login') }}";
-                        }, 3000);
-                    </script>
                 {% endif %}
             {% endfor %}
         {% endif %}
@@ -53,13 +48,6 @@
          </div>
     </form>
 </div>
-{% if category == 'success' %}
-    <script type="text/javascript">
-        setTimeout(function(){
-            window.location.href = "{{ url_for('login') }}";
-        }, 3000);
-    </script>
-{% endif %}
 <footer class="footer">
     <p class="copyright">PRIN - маркетплейс © марк "quadeck" аккумулятор 2025-2025.</p>
     <p class="disclaimer">Переходя сюда вы даете согласие что я списываю все деньги с вашей карты потому что сами согласились на аферту(аферу) и мне ваще пох😎😎😎</p>
