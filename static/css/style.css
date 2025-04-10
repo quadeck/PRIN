@@ -95,12 +95,13 @@ html, body {
     justify-content: flex-end;
     list-style: none;
     margin: 0;
-    padding: 0 15px;
+    padding-right: 50px;
     align-items: center;
     gap: 10px;
 }
 
 .nav-list li {
+    display: inline-block;
     margin-left: 20px;
 }
 
@@ -108,10 +109,11 @@ html, body {
     text-decoration: none;
     color: #333;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .nav-list a:hover {
-    color: #0066cc;
+    color: #0066cc !important;
 }
 
 .main {

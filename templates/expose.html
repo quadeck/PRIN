@@ -43,15 +43,13 @@
 <header class="header">
     <nav class="nav">
         <ul class="nav-list">
-            <li class="logo">
-            <a href="/">
+            <a href="/" class="logo">
             <img src="/static/images/logo.png" alt="Лого">
             </a>
-            </li>
             <li><a href="/contacts">Контакты</a></li>
             <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
             {% if current_user.is_authenticated %}
-                <li><a href="/profile">Личный кабинет</a></li>
+                <li><a href="/profile">Профиль</a></li>
                 <li><a href="/logout">Выйти</a></li>
             {% else %}
                 <li><a href="/login">Войти</a></li>
