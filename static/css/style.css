@@ -252,22 +252,33 @@ html, body {
     flex-direction: column;
 }
 
-.error-message {
-    color: #ff0000;
-    font-size: 20px;
-    margin-top: 10px;
-    text-align: center;
-    font-family: 'Inter', 'Montserrat', 'Itim', sans-serif;
+.flash-messages ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
-.success-message {
-    color: #62ff00;
-    font-size: 20px;
-    margin-top: 10px;
-    text-align: center;
-    font-family: 'Inter', 'Montserrat', 'Itim', sans-serif;
+.flash-messages .flash-message {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
+.flash-messages .error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.flash-messages .success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.flash-messages .info {
+    background-color: #cce5ff;
+    color: #004085;
+}
 .vopros-wrapper {
     display: flex;
     flex-direction: column;
@@ -480,11 +491,6 @@ body :not(header) button:hover {
     font-weight: bolder;
 }
 
-#error-message {
-    color: red;
-    display: none;
-}
-
 .pagination {
     display: flex;
     justify-content: center;
@@ -632,7 +638,7 @@ body :not(header) button:hover {
 }
 
 .product-actions {
-    margin-top: 300px;
+    margin-top: 250px;
 }
 
 .product-page .product-actions button:hover {
@@ -859,4 +865,97 @@ a {
     border: 1px solid #ccc;
     border-radius: 12px;
     font-size: 14px;
+}
+
+.basket-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.basket-header {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.basket-empty-message {
+    text-align: center;
+    font-size: 1.2em;
+    color: #6c757d;
+    margin-top: 30px;
+}
+
+.basket-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.basket-table th, .basket-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.basket-table th {
+    background-color: #343a40;
+    color: white;
+}
+
+.basket-table td img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.basket-item-name {
+    font-weight: bold;
+}
+
+.basket-item-price, .basket-item-quantity {
+    text-align: right;
+}
+
+.basket-action-buttons {
+    text-align: right;
+}
+
+.basket-action-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.basket-action-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.basket-footer {
+    text-align: right;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.basket-footer .total-price {
+    color: #28a745;
+}
+
+.basket-footer .checkout-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.basket-footer .checkout-button:hover {
+    background-color: #218838;
 }

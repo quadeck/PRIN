@@ -4,14 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="доработаны карточки товаров и мелкие фиксы">
-      <change afterPath="$PROJECT_DIR$/static/images/default-avatar.jpg" afterDir="false" />
+    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="аватарки с бд, хедер постоянно на экране">
+      <change afterPath="$PROJECT_DIR$/templates/basket.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/2d4a9915-8b75-4329-b3d7-d1458c03caba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/2d4a9915-8b75-4329-b3d7-d1458c03caba.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/catalog.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/catalog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/expose.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/expose.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,6 +58,9 @@
     &quot;accountId&quot;: &quot;5e6dd2c3-e3ec-4886-9a88-30cdd8ba095b&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;712222ff&quot;,
   &quot;associatedIndex&quot;: 8
@@ -165,7 +171,7 @@
       <workItem from="1744132085024" duration="27777000" />
       <workItem from="1744189633730" duration="325000" />
       <workItem from="1744203363245" duration="405000" />
-      <workItem from="1744203777500" duration="39899000" />
+      <workItem from="1744203777500" duration="49536000" />
     </task>
     <task id="LOCAL-00001" summary="D">
       <option name="closed" value="true" />
@@ -351,7 +357,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744245618869</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="аватарки с бд, хедер постоянно на экране">
+      <option name="closed" value="true" />
+      <created>1744282377491</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1744282377491</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -381,7 +395,8 @@
     <MESSAGE value="футер везде и правки какие-то" />
     <MESSAGE value="настройка профиля" />
     <MESSAGE value="доработаны карточки товаров и мелкие фиксы" />
-    <option name="LAST_COMMIT_MESSAGE" value="доработаны карточки товаров и мелкие фиксы" />
+    <MESSAGE value="аватарки с бд, хедер постоянно на экране" />
+    <option name="LAST_COMMIT_MESSAGE" value="аватарки с бд, хедер постоянно на экране" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -396,6 +411,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FlaskProject1$FlaskProject1.coverage" NAME="FlaskProject1 Coverage Results" MODIFIED="1744015340115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FlaskProject1$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1744281671236" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FlaskProject1$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1744294253816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина PRIN</title>
+    <link rel="icon" href="/static/images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header class="header">
+    <nav class="nav">
+        <ul class="nav-list">
+            <a href="/" class="logo">
+            <img src="/static/images/logo.png" alt="Лого">
+            </a>
+            <li><a href="/contacts">Контакты</a></li>
+            <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="/profile">Профиль</a></li>
+                <li><a href="/logout">Выйти</a></li>
+            {% else %}
+                <li><a href="/login">Войти</a></li>
+                <li><a href="/signup">Зарегистрироваться</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+<div class="basket-container">
+    <div class="basket-header">Ваша корзина</div>
+
+    {% if not cart %}
+    <div class="basket-empty-message">
+        Ваша корзина пуста.
+    </div>
+    <a href="{{ url_for('catalog') }}" class="btn btn-primary">Перейти к каталогу</a>
+    {% else %}
+        <table class="basket-table">
+            <thead>
+                <tr>
+                    <th>Изображение</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td><img src="{{ product['image_url'] }}" alt="{{ product['name'] }}"></td>
+                        <td class="basket-item-name">{{ product['name'] }}</td>
+                        <td class="basket-item-price">{{ product['price'] }} руб.</td>
+                        <td class="basket-item-quantity">1</td>
+                        <td class="basket-action-buttons">
+                            <form action="{{ url_for('remove_from_cart') }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="articul" value="{{ product['articul'] }}">
+                                <button type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="basket-footer">
+            <div>Общая сумма: <span class="total-price">{{ total_price }} руб.</span></div>
+            <form action="{{ url_for('checkout') }}" method="POST">
+                <button class="checkout-button" type="submit">Оформить заказ</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

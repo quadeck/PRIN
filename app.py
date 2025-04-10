@@ -16,10 +16,6 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 PRODUCT_IMAGE_FOLDER = 'static/uploads'
 
-app.config['AVATARS_FOLDER'] = 'static/avatars'
-app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
-PRODUCT_AVATARS_FOLDER = 'static/avatars'
-
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 def allowed_file(filename):
@@ -197,16 +193,21 @@ def login():
 
     return render_template('login.html')
 
+
 @app.route('/product/<int:articul>')
 def product_page(articul):
     db = get_db()
+
     product = db.execute('SELECT * FROM products WHERE articul = ?', (articul,)).fetchone()
 
     if product is None:
         flash("Товар не найден", "error")
         return redirect(url_for('catalog'))
 
-    return render_template('product.html', product=product)
+    seller = db.execute('SELECT username FROM accounts WHERE id = ?', (product['user_id'],)).fetchone()
+    seller_name = seller['username'] if seller else 'Неизвестный'
+
+    return render_template('product.html', product=product, seller_name=seller_name)
 
 @app.route('/add_to_cart/<int:articul>', methods=['POST'])
 @login_required
@@ -245,7 +246,6 @@ def catalog():
     db = get_db()
 
     total_products = db.execute('SELECT COUNT(*) FROM products').fetchone()[0]
-
     total_pages = (total_products + per_page - 1) // per_page
 
     products = db.execute(
@@ -253,13 +253,30 @@ def catalog():
         (per_page, (page - 1) * per_page)
     ).fetchall()
 
+    products_with_seller = []
+    for product in products:
+        user_id = product['user_id']
+
+        seller = db.execute(
+            'SELECT * FROM accounts WHERE id = ?',
+            (user_id,)
+        ).fetchone()
+
+        seller_name = seller['username'] if seller else 'Неизвестный'
+
+        product_dict = dict(product)
+        product_dict['seller_name'] = seller_name
+
+        products_with_seller.append(product_dict)
+
     return render_template(
         'catalog.html',
-        products=products,
+        products=products_with_seller,
         page=page,
         total_pages=total_pages,
         per_page=per_page
     )
+
 
 @app.route('/pickup')
 @login_required
@@ -298,11 +315,11 @@ def add_product():
                 image_url = '/static/uploads/' + os.path.basename(image_path)
             else:
                 flash('Не удалось загрузить файл изображения!', 'errorload')
-                return redirect(url_for('add_product'))
+                return redirect(url_for('expose'))
 
         db = get_db()
-        db.execute('INSERT INTO products (name, description, price, stock_quantity, image_url) VALUES (?, ?, ?, ?, ?)',
-                   (name, description, price, stock_quantity, image_url))
+        db.execute('INSERT INTO products (name, description, price, stock_quantity, image_url, user_id) VALUES (?, ?, ?, ?, ?, ?) ',
+                   (name, description, price, stock_quantity, image_url, current_user.id))
         db.commit()
 
         flash('Продукт успешно добавлен!', 'successadd')
@@ -311,6 +328,45 @@ def add_product():
 @app.route('/links')
 def links():
     return render_template('links.html')
+
+@app.route('/profile/basket', methods=['GET', 'POST'])
+@login_required
+def profile_basket():
+    cart = session.get('cart', [])
+
+    if not cart:
+        flash('Ваша корзина пуста.', 'info')
+
+    db = get_db()
+    products_in_cart = []
+
+    for item in cart:
+        product = db.execute('SELECT * FROM products WHERE articul = ?', (item['articul'],)).fetchone()
+        if product:
+            products_in_cart.append(product)
+
+    if request.method == 'POST':
+        product_id = request.form.get('product_id')
+        cart = [item for item in cart if item['articul'] != product_id]
+        session['cart'] = cart
+        flash('Товар удалён из корзины.', 'success')
+        return redirect(url_for('profile_basket'))
+
+    return render_template('basket.html', products=products_in_cart, cart=cart)
+
+@app.route('/remove_from_cart', methods=['POST'])
+@login_required
+def remove_from_cart():
+    articul = request.form.get('articul')
+    cart = session.get('cart', [])
+
+    cart = [item for item in cart if item['articul'] != int(articul)]
+
+    session['cart'] = cart
+    session.modified = True
+
+    flash('Товар удален из корзины.', 'success')
+    return redirect(url_for('profile_basket'))
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
