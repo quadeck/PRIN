@@ -30,6 +30,7 @@
 <main>
     <h1>Мои товары</h1>
         <div class="products-list">
+        {% if products %}
           {% for product in products %}
               <a href="{{ url_for('product_page', articul=product.articul) }}" class="product-card-link">
                 <div class="product-card">
@@ -41,8 +42,13 @@
                 </div>
               </a>
           {% endfor %}
+        {% else %}
+            <p><strong>У вас нет товаров.</strong></p>
+        {% endif %}
         </div>
 </main>
+<br>
+    <br>
 <footer class="footer">
     <h2 class="copyright">PRIN - маркетплейс © марк "quadeck" аккумулятор 2025-2025.</h2>
     <h2 class="disclaimer">Переходя сюда вы даете согласие что я списываю все деньги с вашей карты потому что сами согласились на аферту(аферу) и мне ваще пох😎😎😎</h2>
