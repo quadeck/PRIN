@@ -59,7 +59,7 @@
     <label for="image" class="file-button" id="image-button">Выберите фото</label>
     <input type="file" id="image" name="image" accept="image/*" onchange="updateFileName()">
     <button type="button" id="delete-button" class="delete-button" onclick="clearImage()">Удалить изображение</button>
-    <button type="submit">Сохранить</button>
+    <button type="submit" class="photo-button">Сохранить</button>
 </form>
     <style>
         .tobasket-button button{
@@ -76,12 +76,22 @@
         .tohistory-button button:hover{
             background-color: #8c00ff;
         }
+        .tomy-button button {
+            margin-top: 15px;
+            background-color: #ff7100;
+        }
+        .tomy-button button:hover{
+            background-color: #b54a01;
+        }
     </style>
         <a class="tobasket-button" href="/profile/basket">
             <button type="button">Перейти в корзину 🛒</button>
         </a>
         <a class="tohistory-button" href="/profile/order_history">
             <button type="button">История заказов 🕒</button>
+        </a>
+        <a class="tomy-button" href="/profile/products">
+            <button type="button">Мои товары 📦</button>
         </a>
 </div>
 <footer class="footer">

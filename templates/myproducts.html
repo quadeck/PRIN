@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои товары PRIN</title>
+    <link rel="icon" href="/static/images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="my-products-page">
+    <header class="header">
+        <nav class="nav">
+            <ul class="nav-list">
+                <a href="/" class="logo">
+                    <img src="/static/images/logo.png" alt="Лого">
+                </a>
+                <li><a href="/contacts">Контакты</a></li>
+                <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="/profile">Профиль</a></li>
+                    <li><a href="/logout">Выйти</a></li>
+                {% else %}
+                    <li><a href="/login">Войти</a></li>
+                    <li><a href="/signup">Зарегистрироваться</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+<main>
+    <h1>Мои товары</h1>
+        <div class="products-list">
+          {% for product in products %}
+              <a href="{{ url_for('product_page', articul=product.articul) }}" class="product-card-link">
+                <div class="product-card">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                    <h2>Название: {{ product.name }}</h2>
+                    <h2>Артикул: {{ product.articul }}</h2>
+                    <p>Цена: {{ product.price }}₽</p>
+                    <p>Количество на складе: {{ product.stock_quantity }}</p>
+                </div>
+              </a>
+          {% endfor %}
+        </div>
+</main>
+<footer class="footer">
+    <h2 class="copyright">PRIN - маркетплейс © марк "quadeck" аккумулятор 2025-2025.</h2>
+    <h2 class="disclaimer">Переходя сюда вы даете согласие что я списываю все деньги с вашей карты потому что сами согласились на аферту(аферу) и мне ваще пох😎😎😎</h2>
+</footer>
+</body>
+</html>

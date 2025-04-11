@@ -99,9 +99,9 @@
 
         <div class="basket-footer">
             <div>Общая сумма: <span class="total-price">{{ total_price }} руб.</span></div>
-            <a href="/order">
-            <button class="checkout-button" type="submit">Оформить заказ</button>
-            </a>
+            <form action="/order">
+                <button class="checkout-button" type="submit">Оформить заказ</button>
+            </form>
         </div>
     {% endif %}
 </div>

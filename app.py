@@ -431,6 +431,17 @@ def update_quantity():
 def links():
     return render_template('links.html')
 
+@app.route('/profile/products')
+@login_required
+def my_products():
+    db = get_db()
+    user_id = current_user.id
+
+    products = db.execute('''
+        SELECT * FROM products WHERE user_id = ?
+    ''', (user_id,)).fetchall()
+    return render_template('myproducts.html', products=products)
+
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
