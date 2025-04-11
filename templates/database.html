@@ -42,7 +42,7 @@
                 <th>Цена</th>
                 <th>Количество</th>
                 <th>Когда создан</th>
-                <th>Действия</th>
+                <th>Когда обновлён</th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +55,7 @@
                     <td>{{ product.price }}</td>
                     <td>{{ product.stock_quantity }}</td>
                     <td>{{ product.created_at }}</td>
+                    <td>{{ product.updated_at }}</td>
                 </tr>
             {% endfor %}
         {% else %}

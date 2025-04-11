@@ -28,8 +28,7 @@
 </header>
 <div class="basket-container">
     <div class="basket-header">Ваша корзина</div>
-
-    {% if not cart %}
+    {% if not basket_items %}
     <div class="basket-empty-message">
         Ваша корзина пуста.
     </div>
@@ -38,7 +37,7 @@
         <table class="basket-table">
             <thead>
                 <tr>
-                    <th>Изображение</th>
+                    <th>Фотография</th>
                     <th>Название</th>
                     <th>Цена</th>
                     <th>Количество</th>
@@ -46,15 +45,15 @@
                 </tr>
             </thead>
             <tbody>
-                {% for product in products %}
+                {% for item in basket_items %}
                     <tr>
-                        <td><img src="{{ product['image_url'] }}" alt="{{ product['name'] }}"></td>
-                        <td class="basket-item-name">{{ product['name'] }}</td>
-                        <td class="basket-item-price">{{ product['price'] }} руб.</td>
-                        <td class="basket-item-quantity">1</td>
+                        <td><img src="{{ item['image_url'] }}" alt="{{ item['name'] }}"></td>
+                        <td class="basket-item-name">{{ item['name'] }}</td>
+                        <td class="basket-item-price">{{ item['price'] }} руб.</td>
+                        <td class="basket-item-quantity">{{ item['quantity'] }}</td>
                         <td class="basket-action-buttons">
-                            <form action="{{ url_for('remove_from_cart') }}" method="POST" style="display:inline;">
-                                <input type="hidden" name="articul" value="{{ product['articul'] }}">
+                            <form action="{{ url_for('remove_from_basket') }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="basket_item_id" value="{{ item['id'] }}">
                                 <button type="submit">Удалить</button>
                             </form>
                         </td>
@@ -65,12 +64,9 @@
 
         <div class="basket-footer">
             <div>Общая сумма: <span class="total-price">{{ total_price }} руб.</span></div>
-            <form action="{{ url_for('checkout') }}" method="POST">
-                <button class="checkout-button" type="submit">Оформить заказ</button>
-            </form>
+            <button class="checkout-button" type="submit">Оформить заказ</button>
         </div>
     {% endif %}
 </div>
-
 </body>
 </html>

@@ -499,7 +499,7 @@
     </routine>
     <schema id="191" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2025-04-10.12:04:39</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-04-11.00:24:15</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="192" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1591,116 +1591,161 @@
       <Position>1</Position>
     </argument>
     <table id="555" parent="191" name="accounts"/>
-    <table id="556" parent="191" name="products"/>
-    <table id="557" parent="191" name="sqlite_master">
+    <table id="556" parent="191" name="cart_items"/>
+    <table id="557" parent="191" name="products"/>
+    <table id="558" parent="191" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="558" parent="191" name="sqlite_sequence">
+    <table id="559" parent="191" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <column id="559" parent="555" name="id">
+    <column id="560" parent="555" name="id">
       <AutoIncrement>1</AutoIncrement>
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="560" parent="555" name="username">
+    <column id="561" parent="555" name="username">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="561" parent="555" name="password">
+    <column id="562" parent="555" name="password">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="562" parent="555" name="created_at">
+    <column id="563" parent="555" name="created_at">
       <DefaultExpression>(DATETIME(CURRENT_TIMESTAMP, &apos;+4 hours&apos;))</DefaultExpression>
       <Position>4</Position>
       <StoredType>DATETIME|0s</StoredType>
     </column>
-    <column id="563" parent="555" name="role">
+    <column id="564" parent="555" name="role">
       <DefaultExpression>&apos;user&apos;</DefaultExpression>
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="564" parent="555" name="avatar">
+    <column id="565" parent="555" name="avatar">
       <Position>6</Position>
       <StoredType>BLOB|0s</StoredType>
     </column>
-    <index id="565" parent="555" name="sqlite_autoindex_accounts_1">
+    <index id="566" parent="555" name="sqlite_autoindex_accounts_1">
       <ColNames>username</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="566" parent="555">
+    <key id="567" parent="555">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="567" parent="555">
+    <key id="568" parent="555">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_accounts_1</UnderlyingIndexName>
     </key>
-    <column id="568" parent="556" name="articul">
+    <column id="569" parent="556" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="569" parent="556" name="name">
+    <column id="570" parent="556" name="user_id">
+      <NotNull>1</NotNull>
       <Position>2</Position>
-      <StoredType>TEXT|0s</StoredType>
+      <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="570" parent="556" name="description">
+    <column id="571" parent="556" name="product_articul">
+      <NotNull>1</NotNull>
       <Position>3</Position>
-      <StoredType>TEXT|0s</StoredType>
+      <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="571" parent="556" name="price">
+    <column id="572" parent="556" name="quantity">
+      <DefaultExpression>1</DefaultExpression>
+      <NotNull>1</NotNull>
       <Position>4</Position>
-      <StoredType>REAL|0s</StoredType>
-    </column>
-    <column id="572" parent="556" name="stock_quantity">
-      <Position>5</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="573" parent="556" name="image_url">
-      <Position>6</Position>
-      <StoredType>TEXT|0s</StoredType>
-    </column>
-    <column id="574" parent="556" name="user_id">
-      <Position>7</Position>
-      <StoredType>INTEGER|0s</StoredType>
-    </column>
-    <foreign-key id="575" parent="556">
+    <foreign-key id="573" parent="556">
       <ColNames>user_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>accounts</RefTableName>
     </foreign-key>
-    <key id="576" parent="556">
-      <ColNames>articul</ColNames>
+    <foreign-key id="574" parent="556">
+      <ColNames>product_articul</ColNames>
+      <RefColNames>articul</RefColNames>
+      <RefTableName>products</RefTableName>
+    </foreign-key>
+    <key id="575" parent="556">
+      <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="577" parent="557" name="type">
+    <column id="576" parent="557" name="articul">
       <Position>1</Position>
-      <StoredType>TEXT|0s</StoredType>
+      <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="578" parent="557" name="name">
+    <column id="577" parent="557" name="name">
+      <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="579" parent="557" name="tbl_name">
+    <column id="578" parent="557" name="description">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="580" parent="557" name="rootpage">
+    <column id="579" parent="557" name="price">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>integer|0s</StoredType>
+    </column>
+    <column id="580" parent="557" name="stock_quantity">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>INTEGER|0s</StoredType>
+    </column>
+    <column id="581" parent="557" name="image_url">
+      <Position>6</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="582" parent="557" name="user_id">
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StoredType>INTEGER|0s</StoredType>
+    </column>
+    <column id="583" parent="557" name="created_at">
+      <DefaultExpression>(datetime(&apos;now&apos;, &apos;+4 hours&apos;))</DefaultExpression>
+      <Position>8</Position>
+      <StoredType>DATETIME|0s</StoredType>
+    </column>
+    <column id="584" parent="557" name="updated_at">
+      <DefaultExpression>(datetime(&apos;now&apos;, &apos;+4 hours&apos;))</DefaultExpression>
+      <Position>9</Position>
+      <StoredType>DATETIME|0s</StoredType>
+    </column>
+    <key id="585" parent="557">
+      <ColNames>articul</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="586" parent="558" name="type">
+      <Position>1</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="587" parent="558" name="name">
+      <Position>2</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="588" parent="558" name="tbl_name">
+      <Position>3</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="589" parent="558" name="rootpage">
       <Position>4</Position>
       <StoredType>INT|0s</StoredType>
     </column>
-    <column id="581" parent="557" name="sql">
+    <column id="590" parent="558" name="sql">
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="582" parent="558" name="name">
+    <column id="591" parent="559" name="name">
       <Position>1</Position>
     </column>
-    <column id="583" parent="558" name="seq">
+    <column id="592" parent="559" name="seq">
       <Position>2</Position>
     </column>
   </database-model>

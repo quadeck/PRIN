@@ -209,25 +209,67 @@ def product_page(articul):
 
     return render_template('product.html', product=product, seller_name=seller_name)
 
-@app.route('/add_to_cart/<int:articul>', methods=['POST'])
+@app.route('/add_to_basket/<int:articul>', methods=['POST'])
 @login_required
-def add_to_cart(articul):
+def add_to_basket(articul):
     db = get_db()
+    user_id = current_user.id
     product = db.execute('SELECT * FROM products WHERE articul = ?', (articul,)).fetchone()
 
     if not product:
         flash("Товар не найден", "error")
         return redirect(url_for('catalog'))
 
-    if 'cart' not in session:
-        session['cart'] = []
+    existing = db.execute(
+        'SELECT * FROM cart_items WHERE user_id = ? AND product_articul = ?',
+        (user_id, articul)
+    ).fetchone()
 
-    session['cart'].append({'articul': articul, 'name': product['name'], 'price': product['price']})
-
-    session.modified = True  #
-
+    if existing:
+        db.execute(
+            'UPDATE cart_items SET quantity = quantity + 1 WHERE id = ?',
+            (existing['id'],)
+        )
+    else:
+        db.execute(
+            'INSERT INTO cart_items (user_id, product_articul, quantity) VALUES (?, ?, 1)',
+            (user_id, articul)
+        )
+    db.commit()
     flash(f"Товар {product['name']} добавлен в корзину.", "success")
     return redirect(url_for('product_page', articul=articul))
+
+
+@app.route('/add_product', methods=['POST'])
+@login_required
+def add_product():
+    name = request.form['name']
+    description = request.form['description']
+    price = float(request.form['price'])
+    stock_quantity = int(request.form['stock_quantity'])
+
+    image_file = request.files.get('image')
+    image_url = None
+
+    if image_file and image_file.filename != '':
+        if allowed_file(image_file.filename):
+            filename = secure_filename(image_file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            image_file.save(filepath)
+            image_url = '/static/uploads/' + filename
+        else:
+            flash('Недопустимый формат изображения', 'error')
+            return redirect(url_for('expose'))
+
+    db = get_db()
+    db.execute('''
+        INSERT INTO products (name, description, price, stock_quantity, image_url, user_id)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (name, description, price, stock_quantity, image_url, current_user.id))
+    db.commit()
+
+    flash('Товар успешно добавлен!', 'success')
+    return redirect(url_for('catalog'))
 
 @app.route('/contacts')
 def contacts():
@@ -237,6 +279,21 @@ def contacts():
 def pvzadresa():
     return render_template('pvzadresa.html')
 
+
+@app.route('/remove_from_basket', methods=['POST'])
+@login_required
+def remove_from_basket():
+    basket_item_id = request.form.get('basket_item_id')  # Получаем правильный ID корзины
+    db = get_db()
+
+    if basket_item_id:
+        db.execute('DELETE FROM cart_items WHERE id = ? AND user_id = ?', (basket_item_id, current_user.id))
+        db.commit()
+        flash("Товар удалён из корзины.", "success")
+    else:
+        flash("Товар не найден в корзине.", "error")
+
+    return redirect(url_for('basket'))
 @app.route('/catalog')
 @login_required
 def catalog():
@@ -283,90 +340,77 @@ def catalog():
 def pickup():
     return render_template('pickup.html')
 
-@app.route('/expose')
+@app.route('/profile/basket', methods=['GET', 'POST'])
+@login_required
+def basket():
+    db = get_db()
+    user_id = current_user.id
+
+    basket_items = db.execute(''' 
+        SELECT ci.id, ci.quantity, p.articul, p.name, p.price, p.image_url
+        FROM cart_items ci
+        JOIN products p ON ci.product_articul = p.articul
+        WHERE ci.user_id = ?
+    ''', (user_id,)).fetchall()
+
+    total_price = sum(item['price'] * item['quantity'] for item in basket_items)
+
+    if request.method == 'POST':
+        product_id = request.form.get('product_id')
+        db.execute('DELETE FROM cart_items WHERE id = ?', (product_id,))
+        db.commit()
+
+        flash('Товар удалён из корзины.', 'success')
+        return redirect(url_for('basket'))
+
+    return render_template('basket.html', basket_items=basket_items, total_price=total_price)
+
+@app.route('/expose', methods=['GET', 'POST'])
 @login_required
 def expose():
-    error = None
     if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        price = request.form['price']
-        stock_quantity = request.form['stock_quantity']
-        db = get_db()
-        db.execute('INSERT INTO products (name, description, price, stock_quantity) VALUES (?, ?, ?, ?)', (name, description, price, stock_quantity))
-        db.commit()
+        name = request.form.get('name')
+        description = request.form.get('description')
+        price = request.form.get('price')
+        stock_quantity = request.form.get('stock_quantity')
+
+        if not all([name, price, stock_quantity]):
+            flash("Пожалуйста, заполните все обязательные поля.", "error")
+            return redirect(url_for('expose'))
+
+        image = request.files.get('image')
+        image_url = None
+
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            image.save(image_path)
+            image_url = '/static/uploads/' + filename
+        else:
+            flash("Неверный формат изображения.", "error")
+            return redirect(url_for('expose'))
+
+        try:
+            db = get_db()
+            db.execute('''
+                INSERT INTO products (name, description, price, stock_quantity, image_url, user_id)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (name, description, float(price), int(stock_quantity), image_url, current_user.id))
+            db.commit()
+
+            flash("Товар успешно добавлен!", "success")
+            return redirect(url_for('catalog'))
+        except Exception as e:
+            db.rollback()
+            app.logger.error(f"Ошибка при добавлении товара: {e}")
+            flash("Ошибка при добавлении товара.", "error")
+            return redirect(url_for('expose'))
 
     return render_template('expose.html')
-
-@app.route('/add_product', methods=['POST'])
-@login_required
-def add_product():
-    if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        price = float(request.form['price'])
-        stock_quantity = int(request.form['stock_quantity'])
-
-        image_file = request.files.get('image')
-        image_url = None
-        if image_file:
-            image_path = save_image(image_file)
-            if image_path:
-                image_url = '/static/uploads/' + os.path.basename(image_path)
-            else:
-                flash('Не удалось загрузить файл изображения!', 'errorload')
-                return redirect(url_for('expose'))
-
-        db = get_db()
-        db.execute('INSERT INTO products (name, description, price, stock_quantity, image_url, user_id) VALUES (?, ?, ?, ?, ?, ?) ',
-                   (name, description, price, stock_quantity, image_url, current_user.id))
-        db.commit()
-
-        flash('Продукт успешно добавлен!', 'successadd')
-        return redirect(url_for('catalog'))
 
 @app.route('/links')
 def links():
     return render_template('links.html')
-
-@app.route('/profile/basket', methods=['GET', 'POST'])
-@login_required
-def profile_basket():
-    cart = session.get('cart', [])
-
-    if not cart:
-        flash('Ваша корзина пуста.', 'info')
-
-    db = get_db()
-    products_in_cart = []
-
-    for item in cart:
-        product = db.execute('SELECT * FROM products WHERE articul = ?', (item['articul'],)).fetchone()
-        if product:
-            products_in_cart.append(product)
-
-    if request.method == 'POST':
-        product_id = request.form.get('product_id')
-        cart = [item for item in cart if item['articul'] != product_id]
-        session['cart'] = cart
-        flash('Товар удалён из корзины.', 'success')
-        return redirect(url_for('profile_basket'))
-
-    return render_template('basket.html', products=products_in_cart, cart=cart)
-
-@app.route('/remove_from_cart', methods=['POST'])
-@login_required
-def remove_from_cart():
-    articul = request.form.get('articul')
-    cart = session.get('cart', [])
-
-    cart = [item for item in cart if item['articul'] != int(articul)]
-
-    session['cart'] = cart
-    session.modified = True
-
-    flash('Товар удален из корзины.', 'success')
-    return redirect(url_for('profile_basket'))
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -441,12 +485,11 @@ def delete_product():
     product = db.execute('SELECT * FROM products WHERE articul = ?', (articul,)).fetchone()
 
     if product:
-        image_name = product['image_url'].split('/')[-1]
-
-        image_path = os.path.join(PRODUCT_IMAGE_FOLDER, image_name)
-
-        if os.path.exists(image_path):
-            os.remove(image_path)
+        if product['image_url']:
+            image_name = product['image_url'].split('/')[-1]
+            image_path = os.path.join(PRODUCT_IMAGE_FOLDER, image_name)
+            if os.path.exists(image_path):
+                os.remove(image_path)
 
         db.execute('DELETE FROM products WHERE articul = ?', (articul,))
         db.commit()
@@ -456,6 +499,7 @@ def delete_product():
         flash('Товар с таким артикулом не найден.', 'errorsearch')
 
     return redirect(request.referrer)
+
 
 @app.route('/delete_account', methods=['POST'])
 def delete_account():

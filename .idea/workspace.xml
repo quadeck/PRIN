@@ -4,17 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="аватарки с бд, хедер постоянно на экране">
-      <change afterPath="$PROJECT_DIR$/templates/basket.html" afterDir="false" />
+    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="корзина + еще флеши частично">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/2d4a9915-8b75-4329-b3d7-d1458c03caba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/2d4a9915-8b75-4329-b3d7-d1458c03caba.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/Frame_17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/Frame_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/Frame_5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/Frame_6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/Frame_7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/Frame_9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/Group_1_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/Group_2_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/a1de8d6b-056a-4c1a-bc35-6c52a0938565.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/hqdefault.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/photo_2023-06-29_00-00-07.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/photo_2025-02-27_08-40-17.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/uploads/tg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/basket.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/basket.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/catalog.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/catalog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/database.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/database.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/expose.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/expose.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,29 +85,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Flask server.Flask (app.py).executor": "Run",
-    "Flask server.FlaskProject1.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/quadeck/PycharmProjects/FlaskProject1/static/images",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Flask server.Flask (app.py).executor&quot;: &quot;Run&quot;,
+    &quot;Flask server.FlaskProject1.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/quadeck/PycharmProjects/FlaskProject1/static/images&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\quadeck\PycharmProjects\FlaskProject1\static\images" />
@@ -171,7 +185,9 @@
       <workItem from="1744132085024" duration="27777000" />
       <workItem from="1744189633730" duration="325000" />
       <workItem from="1744203363245" duration="405000" />
-      <workItem from="1744203777500" duration="49536000" />
+      <workItem from="1744203777500" duration="56359000" />
+      <workItem from="1744316944903" duration="11000" />
+      <workItem from="1744316969686" duration="7139000" />
     </task>
     <task id="LOCAL-00001" summary="D">
       <option name="closed" value="true" />
@@ -365,7 +381,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744282377491</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="корзина + еще флеши частично">
+      <option name="closed" value="true" />
+      <created>1744298755588</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1744298755588</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -396,7 +420,8 @@
     <MESSAGE value="настройка профиля" />
     <MESSAGE value="доработаны карточки товаров и мелкие фиксы" />
     <MESSAGE value="аватарки с бд, хедер постоянно на экране" />
-    <option name="LAST_COMMIT_MESSAGE" value="аватарки с бд, хедер постоянно на экране" />
+    <MESSAGE value="корзина + еще флеши частично" />
+    <option name="LAST_COMMIT_MESSAGE" value="корзина + еще флеши частично" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -411,6 +436,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FlaskProject1$FlaskProject1.coverage" NAME="FlaskProject1 Coverage Results" MODIFIED="1744015340115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FlaskProject1$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1744294253816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FlaskProject1$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1744331141694" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

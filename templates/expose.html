@@ -59,7 +59,7 @@
     </nav>
 </header>
 <main class="product-form-wrapper">
-    <form action="/add_product" method="POST" class="product-form" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <form action="/expose" method="POST" class="product-form" enctype="multipart/form-data" onsubmit="return validateForm()">
         <input type="text" id="name" name="name" placeholder="Название" required>
         <textarea id="description" name="description" placeholder="Описание"></textarea>
         <style>
@@ -70,7 +70,7 @@
         <label for="image" class="file-button" id="image-button">Выберите фото</label>
         <input type="file" id="image" name="image" accept="image/*" onchange="updateFileName()">
         <button type="button" id="delete-button" class="delete-button" onclick="clearImage()">Удалить изображение</button>
-        <input type="number" step="0.01" id="price" name="price" placeholder="Цена" required>
+        <input type="number" id="price" name="price" placeholder="Цена" required>
         <input type="number" id="stock_quantity" name="stock_quantity" placeholder="Количество" required>
         <button type="submit">Добавить</button>
         <div id="error-message">Ошибка: Пожалуйста, загрузите изображение товара.</div>

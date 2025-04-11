@@ -805,7 +805,6 @@ a {
 .product-page .product-card-link {
     text-decoration: none;
     color: inherit;
-    display: block;
 }
 
 .product-card:hover {
@@ -958,4 +957,10 @@ a {
 
 .basket-footer .checkout-button:hover {
     background-color: #218838;
+}
+
+#error-message {
+    display: none;
+    color: red;
+    margin: 10px 0;
 }
