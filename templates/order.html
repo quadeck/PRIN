@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа</title>
+    <link rel="icon" href="/static/images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav">
+            <ul class="nav-list">
+                <a href="/" class="logo">
+                    <img src="/static/images/logo.png" alt="Лого">
+                </a>
+                <li><a href="/contacts">Контакты</a></li>
+                <li><a href="/pvzadresa">Адреса ПВЗ</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="/profile">Профиль</a></li>
+                    <li><a href="/logout">Выйти</a></li>
+                {% else %}
+                    <li><a href="/login">Войти</a></li>
+                    <li><a href="/signup">Зарегистрироваться</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="order-container">
+            <h1>Оформление заказа</h1>
+
+            {% if message %}
+                <div class="message">
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                <div class="form-group">
+                    <label for="pickup_point">Выберите пункт самовывоза</label>
+                    <input type="text" id="pickup_point" name="pickup_point" required>
+                </div>
+                <div class="basket">
+                    <h2>Товары в корзине:</h2>
+                    {% for item in basket_items %}
+                        <div class="basket-item">
+                            <img src="{{ item['image_url'] }}" alt="{{ item['name'] }}" class="basket-item-image">
+                            <br>
+                            <span class="basket-item-name">Название: {{ item['name'] }}</span>
+                            <br>
+                            <span class="basket-item-quantity">Колличество: {{ item['quantity'] }}</span>
+                            <br>
+                            <span class="basket-item-price">Цена: {{ item['price'] }} ₽</span>
+                        </div>
+                    {% endfor %}
+                    <div class="total-price">
+                        <span>Общая сумма: {{ total_price }} ₽</span>
+                    </div>
+                </div>
+
+                <button type="submit">Оформить заказ</button>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

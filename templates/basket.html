@@ -6,6 +6,37 @@
     <title>Корзина PRIN</title>
     <link rel="icon" href="/static/images/favicon.png" type="image/png">
     <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                const newQuantity = this.value;
+                const itemId = this.dataset.itemId;
+
+                fetch('/update_quantity', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        basket_item_id: itemId,
+                        quantity: newQuantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message || "Ошибка при обновлении количества");
+                    }
+                });
+            });
+        });
+    });
+    </script>
 </head>
 <body>
 <header class="header">
@@ -50,7 +81,11 @@
                         <td><img src="{{ item['image_url'] }}" alt="{{ item['name'] }}"></td>
                         <td class="basket-item-name">{{ item['name'] }}</td>
                         <td class="basket-item-price">{{ item['price'] }} руб.</td>
-                        <td class="basket-item-quantity">{{ item['quantity'] }}</td>
+                        <td class="basket-item-quantity">
+                            <input type="number" min="1" value="{{ item['quantity'] }}"
+                                   data-item-id="{{ item['id'] }}"
+                                   class="quantity-input">
+                        </td>
                         <td class="basket-action-buttons">
                             <form action="{{ url_for('remove_from_basket') }}" method="POST" style="display:inline;">
                                 <input type="hidden" name="basket_item_id" value="{{ item['id'] }}">
@@ -64,7 +99,9 @@
 
         <div class="basket-footer">
             <div>Общая сумма: <span class="total-price">{{ total_price }} руб.</span></div>
+            <a href="/order">
             <button class="checkout-button" type="submit">Оформить заказ</button>
+            </a>
         </div>
     {% endif %}
 </div>

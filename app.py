@@ -1,10 +1,11 @@
-from flask import Flask,g , render_template, request, redirect, flash, url_for, session, send_file
+from flask import Flask,g , render_template, request, redirect, flash, url_for, session, send_file, jsonify
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from datetime import datetime
 from io import BytesIO
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -12,6 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 app.secret_key = 'fxckbalenci666'
 
+DATABASE = 'users.db'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 PRODUCT_IMAGE_FOLDER = 'static/uploads'
@@ -88,8 +90,6 @@ def init_db():
     connection.commit()
     connection.close()
 
-DATABASE = 'users.db'
-
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -116,7 +116,6 @@ def database():
 @app.route('/')
 def hello_world():
     return render_template('index.html')
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -193,7 +192,6 @@ def login():
 
     return render_template('login.html')
 
-
 @app.route('/product/<int:articul>')
 def product_page(articul):
     db = get_db()
@@ -239,7 +237,6 @@ def add_to_basket(articul):
     flash(f"Товар {product['name']} добавлен в корзину.", "success")
     return redirect(url_for('product_page', articul=articul))
 
-
 @app.route('/add_product', methods=['POST'])
 @login_required
 def add_product():
@@ -279,11 +276,10 @@ def contacts():
 def pvzadresa():
     return render_template('pvzadresa.html')
 
-
 @app.route('/remove_from_basket', methods=['POST'])
 @login_required
 def remove_from_basket():
-    basket_item_id = request.form.get('basket_item_id')  # Получаем правильный ID корзины
+    basket_item_id = request.form.get('basket_item_id')
     db = get_db()
 
     if basket_item_id:
@@ -294,6 +290,7 @@ def remove_from_basket():
         flash("Товар не найден в корзине.", "error")
 
     return redirect(url_for('basket'))
+
 @app.route('/catalog')
 @login_required
 def catalog():
@@ -333,7 +330,6 @@ def catalog():
         total_pages=total_pages,
         per_page=per_page
     )
-
 
 @app.route('/pickup')
 @login_required
@@ -408,6 +404,29 @@ def expose():
 
     return render_template('expose.html')
 
+@app.route('/update_quantity', methods=['POST'])
+@login_required
+def update_quantity():
+    data = request.get_json()
+    item_id = data.get('basket_item_id')
+    quantity = data.get('quantity')
+
+    try:
+        quantity = int(quantity)
+        if quantity < 1:
+            raise ValueError("Quantity must be at least 1")
+    except (ValueError, TypeError):
+        return jsonify({'success': False, 'message': 'Неверное количество'})
+
+    db = get_db()
+    db.execute(
+        'UPDATE cart_items SET quantity = ? WHERE id = ? AND user_id = ?',
+        (quantity, item_id, current_user.id)
+    )
+    db.commit()
+
+    return jsonify({'success': True})
+
 @app.route('/links')
 def links():
     return render_template('links.html')
@@ -460,7 +479,6 @@ def user_avatar(user_id):
             mimetype='image/jpeg,png,jpg,gif'
         )
     else:
-        # Отдать заглушку
         return redirect(url_for('static', filename='default_avatar.png'))
 
 @app.route('/vopros')
@@ -500,7 +518,6 @@ def delete_product():
 
     return redirect(request.referrer)
 
-
 @app.route('/delete_account', methods=['POST'])
 def delete_account():
     id = request.form['id']
@@ -512,6 +529,117 @@ def delete_account():
         db.commit()
 
     return redirect(request.referrer)
+
+@app.route('/order', methods=['GET', 'POST'])
+@login_required
+def order():
+    db = get_db()
+    user_id = current_user.id
+    basket_items = db.execute('''
+        SELECT ci.id, ci.quantity, p.articul, p.name, p.price, p.image_url
+        FROM cart_items ci
+        JOIN products p ON ci.product_articul = p.articul
+        WHERE ci.user_id = ?
+    ''', (user_id,)).fetchall()
+
+    total_price = sum(item['price'] * item['quantity'] for item in basket_items)
+    message = None
+
+    if request.method == 'POST':
+        pickup_point = request.form.get('pickup_point')
+
+        if pickup_point and basket_items:
+            try:
+                last_order = db.execute('''
+                    SELECT MAX(order_number) AS last_order_number 
+                    FROM orders 
+                    WHERE user_id = ?
+                ''', (user_id,)).fetchone()
+
+                order_number = (last_order['last_order_number'] or 0) + 1
+
+                for item in basket_items:
+                    product = db.execute('''
+                        SELECT stock_quantity FROM products WHERE articul = ?
+                    ''', (item['articul'],)).fetchone()
+
+                    if product is None:
+                        message = f"Товар с артикулом {item['articul']} не найден."
+                        return render_template('order.html', basket_items=basket_items, total_price=total_price,
+                                               message=message)
+
+                    if product['stock_quantity'] < item['quantity']:
+                        message = f"Недостаточно товара с артикулом {item['articul']} на складе."
+                        return render_template('order.html', basket_items=basket_items, total_price=total_price,
+                                               message=message)
+
+                created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+                db.execute('''
+                    INSERT INTO orders (user_id, pickup_point, total_price, created_at, order_number)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (user_id, pickup_point, total_price, created_at, order_number))
+                db.commit()
+
+                order_id = db.execute('SELECT last_insert_rowid()').fetchone()[0]
+
+                for item in basket_items:
+                    db.execute('''
+                        INSERT INTO order_items (order_id, product_articul, quantity, price)
+                        VALUES (?, ?, ?, ?)
+                    ''', (order_id, item['articul'], item['quantity'], item['price']))
+
+                    db.execute('''
+                        UPDATE products
+                        SET stock_quantity = stock_quantity - ?
+                        WHERE articul = ?
+                    ''', (item['quantity'], item['articul']))
+
+                db.commit()
+                db.execute('DELETE FROM cart_items WHERE user_id = ?', (user_id,))
+                db.commit()
+
+                message = "Заказ успешно оформлен!"
+                return redirect(url_for('order_history'))
+
+            except Exception as e:
+                db.rollback()
+                app.logger.error(f"Ошибка при оформлении заказа: {e}")
+                message = "Ошибка при оформлении заказа."
+
+        else:
+            message = "Пожалуйста, выберите пункт самовывоза."
+
+    return render_template('order.html', basket_items=basket_items, total_price=total_price, message=message)
+
+@app.route('/profile/order_history')
+@login_required
+def order_history():
+    db = get_db()
+    user_id = current_user.id
+
+    orders = db.execute('''
+        SELECT o.id, o.order_number, o.pickup_point, o.total_price, o.created_at
+        FROM orders o
+        WHERE o.user_id = ?
+        ORDER BY o.created_at DESC
+    ''', (user_id,)).fetchall()
+
+    orders_with_items = []
+    for order in orders:
+        order_items = db.execute('''
+            SELECT oi.product_articul, oi.quantity, oi.price, p.name
+            FROM order_items oi
+            JOIN products p ON oi.product_articul = p.articul
+            WHERE oi.order_id = ?
+        ''', (order['id'],)).fetchall()
+
+        orders_with_items.append({
+            'order': order,
+            'items': order_items
+        })
+
+    return render_template('order_history.html', order_info=orders_with_items)
 
 if __name__ == '__main__':
     with app.app_context():
