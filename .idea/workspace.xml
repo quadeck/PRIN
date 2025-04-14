@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="мелкие фиксы">
+    <list default="true" id="a1c3658b-0860-417b-852a-949b6983ace8" name="Changes" comment="выбор пвз(без логики пока)">
+      <change afterPath="$PROJECT_DIR$/templates/pvz_gamehub.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/pvz_morgana.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/2d4a9915-8b75-4329-b3d7-d1458c03caba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/2d4a9915-8b75-4329-b3d7-d1458c03caba.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order_history.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order_history.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -168,7 +171,10 @@
       <workItem from="1744203777500" duration="56359000" />
       <workItem from="1744316944903" duration="11000" />
       <workItem from="1744316969686" duration="7358000" />
-      <workItem from="1744361006583" duration="26387000" />
+      <workItem from="1744361006583" duration="27762000" />
+      <workItem from="1744538133811" duration="6026000" />
+      <workItem from="1744578813429" duration="3775000" />
+      <workItem from="1744665532637" duration="8378000" />
     </task>
     <task id="LOCAL-00001" summary="D">
       <option name="closed" value="true" />
@@ -402,7 +408,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744407309141</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="выбор пвз(без логики пока)">
+      <option name="closed" value="true" />
+      <created>1744447073120</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1744447073120</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,7 +452,8 @@
     <MESSAGE value="появились заказы, история заказов, улучшенная корзина" />
     <MESSAGE value="мои заказы + мелкие фиксы" />
     <MESSAGE value="мелкие фиксы" />
-    <option name="LAST_COMMIT_MESSAGE" value="мелкие фиксы" />
+    <MESSAGE value="выбор пвз(без логики пока)" />
+    <option name="LAST_COMMIT_MESSAGE" value="выбор пвз(без логики пока)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -453,6 +468,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FlaskProject1$FlaskProject1.coverage" NAME="FlaskProject1 Coverage Results" MODIFIED="1744015340115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FlaskProject1$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1744409807803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FlaskProject1$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1744673721845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

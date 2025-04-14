@@ -499,7 +499,7 @@
     </routine>
     <schema id="191" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2025-04-11.22:21:12</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-04-13.10:30:12</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="192" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1748,163 +1748,168 @@
       <Position>6</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <foreign-key id="594" parent="558">
+    <column id="594" parent="558" name="status">
+      <DefaultExpression>&apos;Ожидает выдачи&apos;</DefaultExpression>
+      <Position>7</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <foreign-key id="595" parent="558">
       <ColNames>user_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>accounts</RefTableName>
     </foreign-key>
-    <key id="595" parent="558">
+    <key id="596" parent="558">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="596" parent="559" name="articul">
+    <column id="597" parent="559" name="articul">
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="597" parent="559" name="name">
+    <column id="598" parent="559" name="name">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="598" parent="559" name="description">
+    <column id="599" parent="559" name="description">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="599" parent="559" name="price">
+    <column id="600" parent="559" name="price">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <column id="600" parent="559" name="stock_quantity">
+    <column id="601" parent="559" name="stock_quantity">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="601" parent="559" name="image_url">
+    <column id="602" parent="559" name="image_url">
       <Position>6</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="602" parent="559" name="user_id">
+    <column id="603" parent="559" name="user_id">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="603" parent="559" name="created_at">
+    <column id="604" parent="559" name="created_at">
       <DefaultExpression>(datetime(&apos;now&apos;, &apos;+4 hours&apos;))</DefaultExpression>
       <Position>8</Position>
       <StoredType>DATETIME|0s</StoredType>
     </column>
-    <column id="604" parent="559" name="updated_at">
+    <column id="605" parent="559" name="updated_at">
       <DefaultExpression>(datetime(&apos;now&apos;, &apos;+4 hours&apos;))</DefaultExpression>
       <Position>9</Position>
       <StoredType>DATETIME|0s</StoredType>
     </column>
-    <key id="605" parent="559">
+    <key id="606" parent="559">
       <ColNames>articul</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="606" parent="560" name="id">
+    <column id="607" parent="560" name="id">
       <AutoIncrement>1</AutoIncrement>
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="607" parent="560" name="pickup_point">
+    <column id="608" parent="560" name="pickup_point">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="608" parent="560" name="user_id">
+    <column id="609" parent="560" name="user_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="609" parent="560" name="order_id">
+    <column id="610" parent="560" name="order_id">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <foreign-key id="610" parent="560">
+    <foreign-key id="611" parent="560">
       <ColNames>pickup_point</ColNames>
       <RefColNames>pickup_point</RefColNames>
       <RefTableName>orders</RefTableName>
-    </foreign-key>
-    <foreign-key id="611" parent="560">
-      <ColNames>user_id</ColNames>
-      <RefColNames>id</RefColNames>
-      <RefTableName>accounts</RefTableName>
     </foreign-key>
     <foreign-key id="612" parent="560">
-      <ColNames>order_id</ColNames>
-      <RefColNames>id</RefColNames>
-      <RefTableName>orders</RefTableName>
-    </foreign-key>
-    <key id="613" parent="560">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="614" parent="561" name="id">
-      <AutoIncrement>1</AutoIncrement>
-      <Position>1</Position>
-      <StoredType>INTEGER|0s</StoredType>
-    </column>
-    <column id="615" parent="561" name="pickup_point">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>TEXT|0s</StoredType>
-    </column>
-    <column id="616" parent="561" name="user_id">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>INTEGER|0s</StoredType>
-    </column>
-    <column id="617" parent="561" name="order_id">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>INTEGER|0s</StoredType>
-    </column>
-    <foreign-key id="618" parent="561">
-      <ColNames>pickup_point</ColNames>
-      <RefColNames>pickup_point</RefColNames>
-      <RefTableName>orders</RefTableName>
-    </foreign-key>
-    <foreign-key id="619" parent="561">
       <ColNames>user_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>accounts</RefTableName>
     </foreign-key>
-    <foreign-key id="620" parent="561">
+    <foreign-key id="613" parent="560">
       <ColNames>order_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>orders</RefTableName>
     </foreign-key>
-    <key id="621" parent="561">
+    <key id="614" parent="560">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="622" parent="562" name="type">
+    <column id="615" parent="561" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <Position>1</Position>
-      <StoredType>TEXT|0s</StoredType>
+      <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="623" parent="562" name="name">
+    <column id="616" parent="561" name="pickup_point">
+      <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="624" parent="562" name="tbl_name">
+    <column id="617" parent="561" name="user_id">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>INTEGER|0s</StoredType>
+    </column>
+    <column id="618" parent="561" name="order_id">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>INTEGER|0s</StoredType>
+    </column>
+    <foreign-key id="619" parent="561">
+      <ColNames>pickup_point</ColNames>
+      <RefColNames>pickup_point</RefColNames>
+      <RefTableName>orders</RefTableName>
+    </foreign-key>
+    <foreign-key id="620" parent="561">
+      <ColNames>user_id</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>accounts</RefTableName>
+    </foreign-key>
+    <foreign-key id="621" parent="561">
+      <ColNames>order_id</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>orders</RefTableName>
+    </foreign-key>
+    <key id="622" parent="561">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="623" parent="562" name="type">
+      <Position>1</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="624" parent="562" name="name">
+      <Position>2</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="625" parent="562" name="tbl_name">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="625" parent="562" name="rootpage">
+    <column id="626" parent="562" name="rootpage">
       <Position>4</Position>
       <StoredType>INT|0s</StoredType>
     </column>
-    <column id="626" parent="562" name="sql">
+    <column id="627" parent="562" name="sql">
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="627" parent="563" name="name">
+    <column id="628" parent="563" name="name">
       <Position>1</Position>
     </column>
-    <column id="628" parent="563" name="seq">
+    <column id="629" parent="563" name="seq">
       <Position>2</Position>
     </column>
   </database-model>

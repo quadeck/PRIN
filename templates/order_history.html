@@ -37,7 +37,15 @@
                     <div class="order">
                         <div class="order-header">
                             <h3>Заказ №{{ order_data['order']['order_number'] }}</h3>
-                            <span class="order-status">Статус: Забрано из {{ order_data['order']['pickup_point'] }}</span>
+                            <span class="order-status">
+                                Статус: {{ order_data['order']['status'] }}
+                            </span>
+                            <span>
+                                {% if order_data['order']['status'] == 'Ожидает выдачи' %}
+                                    <span>Код выдачи: {{ order_data['order']['id'] }}</span>
+                                {% else %}
+                                {% endif %}
+                            </span>
                             <span class="order-date">Дата заказа: {{ order_data['order']['created_at'] }}</span>
                         </div>
 
@@ -56,12 +64,18 @@
                             <span>Общая стоимость:</span>
                             <span class="total-price">{{ order_data['order']['total_price'] }}₽</span>
                         </div>
+
+                        {% if order_data['order']['status'] == 'Ожидает забора' %}
+                            <span class="item-name">{{ order_data }}</span>
+                            <form action="{{ url_for('pickup_order', order_id=order_data['order']['id']) }}" method="POST">
+                                <button type="submit" class="pickup-btn">Забрать заказ</button>
+                            </form>
+                        {% endif %}
                     </div>
                 {% endfor %}
             {% else %}
                 <p>У вас нет заказов.</p>
             {% endif %}
-
             <a href="{{ url_for('hello_world') }}">
                 <button type="button" class="back-to-home-btn">Вернуться на главную</button>
             </a>

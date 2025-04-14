@@ -68,6 +68,106 @@ def admin_required(f):
 
     return decorated_function
 
+def morgana_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return redirect(url_for('vopros'))
+
+        db = get_db()
+        user_data = db.execute('select role from accounts where id = ?', (current_user.id,)).fetchone()
+
+        if user_data is None or user_data['role'] not in ['morgana', 'admin']:
+            flash('Доступ запрещён!', 'error')
+            return redirect(url_for('hello_world'))
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+def gamehub_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return redirect(url_for('vopros'))
+
+        db = get_db()
+        user_data = db.execute('select role from accounts where id = ?', (current_user.id,)).fetchone()
+
+        if user_data is None or user_data['role'] not in ['gamehub', 'admin']:
+            flash('Доступ запрещён!', 'error')
+            return redirect(url_for('hello_world'))
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+@app.route('/pvz_morgana')
+@morgana_required
+def pvz_morgana():
+    db = get_db()
+
+    pvz_good_rows = db.execute(
+        'SELECT * FROM pvz_bad WHERE user_id = ?',
+        (current_user.id,)
+    ).fetchall()
+
+    orders_waiting = []
+    orders_issued = []
+
+    for row in pvz_good_rows:
+        order = db.execute(
+            'SELECT * FROM orders WHERE id = ?',
+            (row['order_id'],)
+        ).fetchone()
+
+        if order:
+            order_with_pvz_id = dict(order)
+            order_with_pvz_id['pvz_id'] = row['id']
+
+            if order['status'] == 'Ожидает выдачи':
+                orders_waiting.append(order_with_pvz_id)
+            elif order['status'] == 'Выдан':
+                orders_issued.append(order_with_pvz_id)
+
+    return render_template(
+        'pvz_morgana.html',
+        orders_waiting=orders_waiting,
+        orders_issued=orders_issued)
+
+
+@app.route('/pvz_gamehub')
+def pvz_gamehub():
+    db = get_db()
+
+    pvz_good_rows = db.execute(
+        'SELECT * FROM pvz_good WHERE user_id = ?',
+        (current_user.id,)
+    ).fetchall()
+
+    orders_waiting = []
+    orders_issued = []
+
+    for row in pvz_good_rows:
+        order = db.execute(
+            'SELECT * FROM orders WHERE id = ?',
+            (row['order_id'],)
+        ).fetchone()
+
+        if order:
+            order_with_pvz_id = dict(order)
+            order_with_pvz_id['pvz_id'] = row['id']
+
+            if order['status'] == 'Ожидает выдачи':
+                orders_waiting.append(order_with_pvz_id)
+            elif order['status'] == 'Выдан':
+                orders_issued.append(order_with_pvz_id)
+
+    return render_template(
+        'pvz_gamehub.html',
+        orders_waiting=orders_waiting,
+        orders_issued=orders_issued)
+
 def save_image(file):
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -546,6 +646,7 @@ def delete_account():
 def order():
     db = get_db()
     user_id = current_user.id
+
     basket_items = db.execute('''
         SELECT ci.id, ci.quantity, p.articul, p.name, p.price, p.image_url
         FROM cart_items ci
@@ -576,23 +677,35 @@ def order():
 
                     if product is None:
                         message = f"Товар с артикулом {item['articul']} не найден."
-                        return render_template('order.html', basket_items=basket_items, total_price=total_price,
-                                               message=message)
+                        return render_template('order.html', basket_items=basket_items, total_price=total_price, message=message)
 
                     if product['stock_quantity'] < item['quantity']:
                         message = f"Недостаточно товара с артикулом {item['articul']} на складе."
-                        return render_template('order.html', basket_items=basket_items, total_price=total_price,
-                                               message=message)
+                        return render_template('order.html', basket_items=basket_items, total_price=total_price, message=message)
 
                 created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
                 db.execute('''
-                    INSERT INTO orders (user_id, pickup_point, total_price, created_at, order_number)
+                    INSERT INTO orders (user_id, total_price, created_at, order_number, pickup_point)
                     VALUES (?, ?, ?, ?, ?)
-                ''', (user_id, pickup_point, total_price, created_at, order_number))
+                ''', (user_id, total_price, created_at, order_number, pickup_point))
                 db.commit()
 
                 order_id = db.execute('SELECT last_insert_rowid()').fetchone()[0]
+
+                if pickup_point == 'pvz_good':
+                    db.execute('''
+                        INSERT INTO pvz_good (order_id, user_id, pickup_point)
+                        VALUES (?, ?, ?)
+                    ''', (order_id, user_id, 'супер GAMEHUB'))
+                elif pickup_point == 'pvz_bad':
+                    db.execute('''
+                        INSERT INTO pvz_bad (order_id, user_id, pickup_point)
+                        VALUES (?, ?, ?)
+                    ''', (order_id, user_id, 'говно моргана'))
+                else:
+                    message = "Выбран неизвестный ПВЗ."
+                    return render_template('order.html', basket_items=basket_items, total_price=total_price, message=message)
 
                 for item in basket_items:
                     db.execute('''
@@ -607,10 +720,10 @@ def order():
                     ''', (item['quantity'], item['articul']))
 
                 db.commit()
+
                 db.execute('DELETE FROM cart_items WHERE user_id = ?', (user_id,))
                 db.commit()
 
-                message = "Заказ успешно оформлен!"
                 return redirect(url_for('order_history'))
 
             except Exception as e:
@@ -630,7 +743,7 @@ def order_history():
     user_id = current_user.id
 
     orders = db.execute('''
-        SELECT o.id, o.order_number, o.pickup_point, o.total_price, o.created_at
+        SELECT o.id, o.order_number, o.pickup_point, o.total_price, o.created_at, o.status
         FROM orders o
         WHERE o.user_id = ?
         ORDER BY o.created_at DESC
@@ -650,7 +763,33 @@ def order_history():
             'items': order_items
         })
 
-    return render_template('order_history.html', order_info=orders_with_items)
+    return render_template('order_history.html', order_info=orders_with_items,)
+
+@app.route('/profile/order_history/<int:order_id>/pickup', methods=['POST'])
+@login_required
+def pickup_order(order_id):
+    db = get_db()
+    user_id = current_user.id
+
+    order = db.execute('''
+        SELECT * FROM orders WHERE id = ? AND user_id = ?
+    ''', (order_id, user_id)).fetchone()
+
+    if not order:
+        flash("Заказ не найден.", "error")
+        return redirect(url_for('order_history'))
+
+    if order['status'] == 'Ожидает забора':
+        db.execute('''
+            UPDATE orders SET status = ? WHERE id = ?
+        ''', ('Забран', order_id))
+        db.commit()
+        flash("Ваш заказ забран успешно!", "success")
+    else:
+        flash("Этот заказ уже был забран или недоступен для получения.", "error")
+
+    return redirect(url_for('order_history'))
+
 
 if __name__ == '__main__':
     with app.app_context():
